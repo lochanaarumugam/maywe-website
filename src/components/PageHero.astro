@@ -3,21 +3,31 @@ interface Props {
   title: string;
   subtitle?: string;
   meta?: string;
+  eyebrow?: string;
+  /** kept for backwards-compat; all heroes now use the layered deep panel */
   variant?: 'green' | 'dark' | 'teal' | 'saffron';
 }
-const { title, subtitle, meta, variant = 'green' } = Astro.props;
-const bg: Record<string, string> = {
-  green: 'bg-green-700',
-  dark: 'bg-green-900',
-  teal: 'bg-teal-500',
-  saffron: 'bg-gradient-to-r from-saffron-700 to-green-700',
-};
+const { title, subtitle, meta, eyebrow } = Astro.props;
 ---
 
-<section class={`${bg[variant]} text-white`}>
-  <div class="max-w-7xl mx-auto px-4 py-14 md:py-20">
-    <h1 class="text-4xl md:text-5xl text-white max-w-3xl">{title}</h1>
-    {subtitle && <p class="mt-4 text-lg md:text-xl text-white/90 max-w-2xl">{subtitle}</p>}
-    {meta && <p class="mt-4 text-sm text-white/80">{meta}</p>}
+<section class="panel-deep overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 py-20 md:py-28 relative">
+    <!-- decorative oversized sprout mark -->
+    <svg
+      class="absolute -right-10 -top-10 w-72 h-72 opacity-[0.08] text-[#e8911c] hidden md:block"
+      viewBox="0 0 48 48"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M24 44c0-9-3-15-10-18 8-1 13 3 15 10 2-9 6-13 13-13-5 5-7 11-7 21z" />
+    </svg>
+
+    <div class="relative max-w-3xl">
+      <span class="kicker mb-5" style="color:#f2c98a">{eyebrow ?? 'MayWe'}</span>
+      <h1 class="text-[2.6rem] md:text-6xl leading-[1.02]">{title}</h1>
+      {subtitle && <p class="mt-5 text-lg md:text-xl text-[#f4ead8]/90 max-w-2xl">{subtitle}</p>}
+      {meta && <p class="mt-5 text-sm text-[#f4ead8]/70">{meta}</p>}
+    </div>
   </div>
+  <div class="h-1 bg-gradient-to-r from-[#e8911c] via-[#c2410c] to-transparent"></div>
 </section>

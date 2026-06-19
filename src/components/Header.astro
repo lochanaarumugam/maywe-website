@@ -1,17 +1,21 @@
 ---
-import { nav, announcement, donate } from '../config';
+import { nav, announcement } from '../config';
 const path = Astro.url.pathname;
 const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
 ---
 
-<header id="site-header" class="sticky top-0 z-40 bg-white transition-shadow">
+<!-- top accent bar -->
+<div class="h-1 bg-gradient-to-r from-marigold via-saffron-700 to-teal-500"></div>
+
+<header id="site-header" class="sticky top-0 z-40 transition-shadow">
   {
     announcement.text && (
-      <div class="bg-green-900 text-white text-sm">
+      <div class="bg-green-900 text-[#f4ead8] text-sm">
         <div class="max-w-7xl mx-auto px-4 py-2 text-center">
+          <span class="text-marigold" aria-hidden="true">✦</span>{' '}
           <span>{announcement.text}</span>
           {announcement.href && (
-            <a href={announcement.href} class="underline font-semibold ml-2 hover:text-green-100">
+            <a href={announcement.href} class="underline underline-offset-2 font-semibold ml-1 text-white hover:text-marigold">
               {announcement.cta} →
             </a>
           )}
@@ -20,25 +24,28 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
     )
   }
 
-  <div class="border-b border-black/5">
-    <nav class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16" aria-label="Primary">
-      <a href="/" class="flex items-center gap-2 font-display text-2xl font-bold text-green-700">
-        <img src="/images/logo.svg" alt="MayWe" width="36" height="36" />
+  <div class="bg-[#faf6ee]/85 backdrop-blur-md border-b border-[rgba(54,38,18,0.1)]">
+    <nav class="max-w-7xl mx-auto px-4 flex items-center justify-between h-[68px]" aria-label="Primary">
+      <a href="/" class="flex items-center gap-2.5 font-display text-2xl font-semibold text-green-900 tracking-tight">
+        <img src="/images/logo.svg" alt="MayWe" width="38" height="38" />
         <span>MayWe</span>
       </a>
 
-      <ul class="hidden lg:flex items-center gap-7">
+      <ul class="hidden lg:flex items-center gap-8">
         {
           nav.map((item) => (
             <li>
               <a
                 href={item.href}
                 class:list={[
-                  'font-medium hover:text-green-700 transition-colors',
+                  'relative py-1.5 text-[0.95rem] font-medium transition-colors hover:text-green-700',
                   isActive(item.href) ? 'text-green-700' : 'text-ink',
                 ]}
               >
                 {item.label}
+                {isActive(item.href) && (
+                  <span class="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-gradient-to-r from-marigold to-saffron-700" />
+                )}
               </a>
             </li>
           ))
@@ -48,7 +55,7 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
       <div class="flex items-center gap-3">
         <a
           href="/donate"
-          class="hidden sm:inline-flex items-center bg-saffron-700 text-white font-semibold px-5 py-2.5 rounded-lg hover:brightness-95 transition min-h-[44px]"
+          class="hidden sm:inline-flex items-center bg-saffron-700 text-white font-semibold text-[0.95rem] px-6 py-2.5 rounded-full hover:brightness-110 hover:-translate-y-0.5 transition-all shadow-[var(--shadow-soft)] min-h-[44px]"
           >Donate</a
         >
         <button
@@ -76,11 +83,11 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
     aria-modal="true"
     aria-label="Menu"
   >
-    <div id="drawer-overlay" class="absolute inset-0 bg-black/40"></div>
+    <div id="drawer-overlay" class="absolute inset-0 bg-green-900/50 backdrop-blur-sm"></div>
     <div
-      class="absolute right-0 top-0 h-full w-72 max-w-[80%] bg-white shadow-xl p-6 flex flex-col gap-1"
+      class="absolute right-0 top-0 h-full w-72 max-w-[80%] bg-paper shadow-xl p-6 flex flex-col gap-1"
     >
-      <button id="nav-close" class="self-end p-2 mb-2 min-h-[44px] min-w-[44px]" aria-label="Close menu">
+      <button id="nav-close" class="self-end p-2 mb-2 min-h-[44px] min-w-[44px] text-ink" aria-label="Close menu">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="6" y1="6" x2="18" y2="18"></line>
           <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -88,14 +95,14 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
       </button>
       {
         nav.map((item) => (
-          <a href={item.href} class="py-3 text-lg font-medium text-ink hover:text-green-700 border-b border-black/5">
+          <a href={item.href} class="py-3 text-lg font-medium text-ink hover:text-green-700 border-b border-[rgba(54,38,18,0.08)]">
             {item.label}
           </a>
         ))
       }
       <a
         href="/donate"
-        class="mt-4 inline-flex items-center justify-center bg-saffron-700 text-white font-semibold px-5 py-3 rounded-lg"
+        class="mt-5 inline-flex items-center justify-center bg-saffron-700 text-white font-semibold px-5 py-3 rounded-full"
         >Donate</a
       >
     </div>
@@ -125,10 +132,9 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
   overlay?.addEventListener('click', shut);
   document.addEventListener('keydown', (e) => e.key === 'Escape' && shut());
 
-  // Sticky header shadow after scroll
   const onScroll = () => {
-    if (window.scrollY > 80) header?.classList.add('shadow-md');
-    else header?.classList.remove('shadow-md');
+    if (window.scrollY > 60) header?.classList.add('shadow-lg');
+    else header?.classList.remove('shadow-lg');
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();

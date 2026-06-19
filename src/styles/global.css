@@ -1,28 +1,44 @@
 @import 'tailwindcss';
 
-/* ─────────────────────────────────────────────────────────────
-   MayWe design tokens (from MayWe-Plan §8).
-   Brand: growth (green), Indian warmth (saffron), trust (teal).
-   These map to Tailwind utilities, e.g. bg-green-700, font-display.
-   ───────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   MayWe — "field-journal" design system
+   Warm editorial aesthetic: cream paper, deep forest green, Indian
+   marigold + teal accents. Token NAMES are kept stable so existing
+   utility classes (bg-green-700, text-saffron-700…) inherit the new,
+   warmer values automatically.
+   ═══════════════════════════════════════════════════════════════ */
 @theme {
-  --color-green-50: #f1f8e9;
-  --color-green-100: #e8f5e9;
-  --color-green-700: #2e7d32;
-  --color-green-900: #1b5e20;
+  /* Surfaces */
+  --color-paper: #faf6ee; /* page background (warm cream) */
+  --color-cream: #f3ecdd; /* deeper cream — alt panels */
+  --color-white: #fffdf8; /* warm white — cards */
 
-  --color-saffron-100: #fbe9e7;
-  --color-saffron-700: #e64a19;
+  /* Greens (growth) */
+  --color-green-50: #ecf1e3; /* pale sage section bg */
+  --color-green-100: #d9e3c9; /* sage pills / progress track */
+  --color-green-700: #1f6b45; /* primary forest */
+  --color-green-900: #143d2a; /* deep forest — dark panels */
 
-  --color-teal-500: #00695c;
+  /* Marigold / saffron (Indian warmth) */
+  --color-saffron-100: #fbe7ce; /* warm marigold cream — CTA bg */
+  --color-saffron-700: #c2410c; /* deep marigold — accent (white text safe) */
+  --color-marigold: #e8911c; /* bright marigold — decorative only */
+  --color-clay: #b45439; /* terracotta — occasional accent */
 
-  --color-ink: #212121; /* body text */
-  --color-muted: #757575; /* secondary text */
+  /* Teal (trust) */
+  --color-teal-500: #0b6e6e;
 
-  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  /* Ink (warm neutrals) */
+  --color-ink: #221c16; /* body text */
+  --color-muted: #6b5f53; /* secondary text */
 
-  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.08);
+  /* Type */
+  --font-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+
+  /* Warm, soft elevation */
+  --shadow-card: 0 14px 34px -18px rgba(54, 38, 18, 0.28);
+  --shadow-soft: 0 4px 14px -8px rgba(54, 38, 18, 0.25);
 }
 
 html {
@@ -32,39 +48,132 @@ html {
 body {
   font-family: var(--font-sans);
   color: var(--color-ink);
-  background: #ffffff;
+  background-color: var(--color-paper);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  position: relative;
+}
+
+/* Subtle paper grain over the whole page (very low opacity, non-interactive) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 h1,
 h2,
 h3 {
   font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  font-optical-sizing: auto;
+}
+
+p {
+  line-height: 1.7;
+}
+
+/* ── Decorative helpers ─────────────────────────────────────── */
+
+/* Eyebrow / kicker */
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
   font-weight: 700;
-  line-height: 1.15;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-saffron-700);
+}
+.kicker::before {
+  content: '';
+  width: 1.6rem;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-marigold), var(--color-saffron-700));
 }
 
-/* Respect users who prefer reduced motion (counter + reveal animations). */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+/* Deep, layered panel — replaces flat green fills (heroes, footer, CTAs) */
+.panel-deep {
+  position: relative;
+  color: #fdf6ea;
+  background-color: var(--color-green-900);
+  background-image:
+    radial-gradient(120% 130% at 0% 0%, rgba(232, 145, 28, 0.22), transparent 46%),
+    radial-gradient(110% 130% at 100% 8%, rgba(11, 110, 110, 0.4), transparent 52%),
+    linear-gradient(150deg, #143d2a 0%, #1c5e3f 55%, #134a3f 100%);
+}
+.panel-deep h1,
+.panel-deep h2,
+.panel-deep h3 {
+  color: #fffaf0;
 }
 
-/* Scroll-reveal helper (toggled by IntersectionObserver in BaseLayout). */
+/* Warm light hero wash */
+.hero-wash {
+  background-color: var(--color-paper);
+  background-image:
+    radial-gradient(80% 75% at 88% 8%, rgba(232, 145, 28, 0.18), transparent 55%),
+    radial-gradient(75% 85% at 6% 95%, rgba(31, 107, 69, 0.12), transparent 60%),
+    radial-gradient(60% 60% at 50% 50%, rgba(11, 110, 110, 0.05), transparent 70%);
+}
+
+/* Hairline divider with a marigold seed in the middle */
+.seed-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  color: var(--color-marigold);
+}
+.seed-divider::before,
+.seed-divider::after {
+  content: '';
+  height: 1px;
+  width: min(8rem, 22vw);
+  background: linear-gradient(90deg, transparent, rgba(180, 84, 57, 0.5));
+}
+.seed-divider::after {
+  transform: scaleX(-1);
+}
+
+/* Editorial card */
+.card {
+  background: var(--color-white);
+  border: 1px solid rgba(54, 38, 18, 0.08);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-card);
+}
+
+/* ── Motion ─────────────────────────────────────────────────── */
 .reveal {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(18px);
   transition:
-    opacity 0.6s ease,
-    transform 0.6s ease;
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal.is-visible {
   opacity: 1;
   transform: none;
 }
+
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   .reveal {
     opacity: 1;
     transform: none;
@@ -72,33 +181,71 @@ h3 {
   }
 }
 
-/* Accessible focus ring */
-:where(a, button, input, textarea, select, summary):focus-visible {
-  outline: 3px solid var(--color-green-700);
-  outline-offset: 2px;
-  border-radius: 2px;
+/* Hero entrance (staggered on load) */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.hero-stagger > * {
+  animation: rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-stagger > *:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.hero-stagger > *:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.hero-stagger > *:nth-child(4) {
+  animation-delay: 0.24s;
+}
+.hero-stagger > *:nth-child(5) {
+  animation-delay: 0.32s;
+}
+.hero-art {
+  animation: rise 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-stagger > *,
+  .hero-art {
+    animation: none;
+  }
 }
 
-/* Markdown content styling (stories, program bodies) */
+/* Accessible focus ring */
+:where(a, button, input, textarea, select, summary):focus-visible {
+  outline: 2.5px solid var(--color-saffron-700);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ── Markdown content (stories, program bodies) ─────────────── */
 .prose-maywe {
   color: var(--color-ink);
-  line-height: 1.75;
-  font-size: 1.0625rem;
+  line-height: 1.8;
+  font-size: 1.075rem;
 }
 .prose-maywe > * + * {
-  margin-top: 1.1em;
+  margin-top: 1.15em;
 }
 .prose-maywe h2 {
-  font-size: 1.6rem;
-  margin-top: 1.8em;
+  font-size: 1.7rem;
+  margin-top: 1.9em;
 }
 .prose-maywe h3 {
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   margin-top: 1.5em;
 }
 .prose-maywe a {
   color: var(--color-green-700);
   text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(31, 107, 69, 0.4);
 }
 .prose-maywe ul,
 .prose-maywe ol {
@@ -114,40 +261,47 @@ h3 {
   margin-top: 0.4em;
 }
 .prose-maywe blockquote {
-  border-left: 4px solid var(--color-green-700);
-  background: var(--color-green-50);
-  padding: 0.75em 1.25em;
+  border-left: 3px solid var(--color-marigold);
+  background: var(--color-saffron-100);
+  padding: 1em 1.4em;
+  margin-inline: 0;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 1.15rem;
-  border-radius: 0 8px 8px 0;
+  font-size: 1.3rem;
+  line-height: 1.45;
+  color: #5a3210;
+  border-radius: 0 12px 12px 0;
 }
 .prose-maywe img {
-  border-radius: 12px;
+  border-radius: 14px;
 }
 .prose-maywe iframe {
   width: 100%;
   aspect-ratio: 16/9;
-  border-radius: 12px;
+  border-radius: 14px;
   border: 0;
 }
 .prose-maywe code {
   background: var(--color-green-50);
-  padding: 0.1em 0.3em;
-  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  border-radius: 5px;
   font-size: 0.9em;
 }
 
-/* Reusable visual placeholder for not-yet-supplied images */
+/* Image placeholder (not-yet-supplied photos) */
 .ph {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #ffffff;
+  color: #fdf6ea;
   font-family: var(--font-sans);
-  font-size: 0.8rem;
-  letter-spacing: 0.04em;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  background-image: linear-gradient(135deg, var(--color-green-700), var(--color-teal-500));
+  background-color: var(--color-green-900);
+  background-image:
+    radial-gradient(100% 120% at 0% 0%, rgba(232, 145, 28, 0.3), transparent 50%),
+    linear-gradient(140deg, #1c5e3f, #0b6e6e);
 }

@@ -16,23 +16,27 @@ const dateStr = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short
 ---
 
 <article
-  class="reveal group flex flex-col bg-white rounded-xl overflow-hidden shadow-[var(--shadow-card)] transition-transform duration-200 hover:-translate-y-1"
+  class="reveal group card flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_44px_-22px_rgba(54,38,18,0.4)]"
 >
-  <a href={href} class="block">
-    <Placeholder src={cover} alt={coverAlt ?? title} label="Story photo" ratio="16/9" />
+  <a href={href} class="block overflow-hidden">
+    <div class="transition-transform duration-500 group-hover:scale-[1.05]">
+      <Placeholder src={cover} alt={coverAlt ?? title} label="Story photo" ratio="16/9" />
+    </div>
   </a>
-  <div class="flex flex-col flex-1 p-5">
+  <div class="flex flex-col flex-1 p-6">
     <span
-      class="self-start text-xs font-semibold uppercase tracking-wide text-green-700 bg-green-100 rounded-full px-3 py-1 mb-3"
+      class="self-start text-[0.68rem] font-bold uppercase tracking-[0.1em] text-saffron-700 bg-saffron-100 rounded-full px-3 py-1 mb-4"
       >{category}</span
     >
-    <h3 class="text-xl mb-2">
-      <a href={href} class="hover:text-green-700">{title}</a>
+    <h3 class="font-display text-[1.4rem] leading-snug mb-2">
+      <a href={href} class="transition-colors hover:text-green-700">{title}</a>
     </h3>
-    <p class="text-sm text-muted mb-3">
+    <p class="text-xs font-medium uppercase tracking-wider text-muted mb-3">
       {dateStr}{readMin ? ` · ${readMin} min read` : ''}
     </p>
-    <p class="text-ink/80 mb-4 flex-1">{excerpt}</p>
-    <a href={href} class="font-semibold text-green-700 hover:text-green-900">Read more →</a>
+    <p class="text-ink/75 mb-5 flex-1 leading-relaxed">{excerpt}</p>
+    <a href={href} class="inline-flex items-center gap-1.5 font-semibold text-green-700 group-hover:gap-2.5 transition-all">
+      Read more <span aria-hidden="true">→</span>
+    </a>
   </div>
 </article>

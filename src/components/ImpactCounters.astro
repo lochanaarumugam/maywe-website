@@ -6,23 +6,25 @@ interface Props {
   class?: string;
 }
 const { size = 'normal', class: cls = '' } = Astro.props;
-const numCls = size === 'large' ? 'text-4xl md:text-5xl' : 'text-3xl md:text-4xl';
+const numCls = size === 'large' ? 'text-5xl md:text-6xl' : 'text-4xl md:text-5xl';
 ---
 
-<div class={`grid grid-cols-2 lg:grid-cols-4 gap-4 ${cls}`} data-impact-counters>
+<div class={`grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 ${cls}`} data-impact-counters>
   {
     impact.counters.map((c) => (
-      <div class="reveal bg-white rounded-xl p-6 text-center shadow-[var(--shadow-card)]">
-        <div class="text-2xl mb-1" aria-hidden="true">{c.icon}</div>
+      <div class="reveal card relative overflow-hidden p-6 md:p-7 text-center">
+        <span class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-marigold to-saffron-700" />
+        <div class="text-xl mb-2 opacity-80" aria-hidden="true">{c.icon}</div>
         <div
-          class={`font-display font-bold text-green-700 ${numCls}`}
+          class={`font-display font-semibold leading-none ${numCls}`}
           data-target={c.value}
           data-format={c.format}
           data-suffix={c.suffix}
+          style="color:#1f6b45"
         >
           0
         </div>
-        <div class="mt-1 text-sm font-medium text-muted">{c.label}</div>
+        <div class="mt-3 text-[0.72rem] font-bold uppercase tracking-[0.12em] text-muted">{c.label}</div>
       </div>
     ))
   }

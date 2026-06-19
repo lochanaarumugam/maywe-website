@@ -10,12 +10,12 @@ interface Props {
 const { href, variant = 'primary', type = 'button', class: cls = '', ...rest } = Astro.props;
 
 const base =
-  'inline-flex items-center justify-center gap-2 font-semibold text-base px-6 py-3 rounded-lg transition-all duration-200 min-h-[44px]';
+  'group inline-flex items-center justify-center gap-2 font-semibold text-[0.95rem] tracking-wide px-7 py-3.5 rounded-full transition-all duration-200 min-h-[46px] hover:-translate-y-0.5 active:translate-y-0';
 const variants: Record<string, string> = {
-  primary: 'bg-green-700 text-white hover:bg-green-900 shadow-sm hover:shadow-md',
-  accent: 'bg-saffron-700 text-white hover:brightness-95 shadow-sm hover:shadow-md',
-  outline: 'border-2 border-green-700 text-green-700 hover:bg-green-50',
-  white: 'bg-white text-green-700 hover:bg-green-50 shadow-sm',
+  primary: 'bg-green-700 text-white hover:bg-green-900 shadow-[var(--shadow-soft)]',
+  accent: 'bg-saffron-700 text-white hover:brightness-110 shadow-[var(--shadow-soft)]',
+  outline: 'border border-green-700/30 text-green-700 hover:border-green-700 hover:bg-green-50',
+  white: 'bg-white text-green-700 hover:bg-green-50 shadow-[var(--shadow-soft)]',
 };
 const cn = `${base} ${variants[variant]} ${cls}`;
 ---

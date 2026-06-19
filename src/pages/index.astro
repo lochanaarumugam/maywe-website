@@ -6,7 +6,7 @@ import SectionHeading from '../components/SectionHeading.astro';
 import ImpactCounters from '../components/ImpactCounters.astro';
 import StoryCard from '../components/StoryCard.astro';
 import Placeholder from '../components/Placeholder.astro';
-import { site } from '../config';
+import impact from '../data/impact.json';
 
 const programs = (await getCollection('programs')).sort((a, b) => a.data.order - b.data.order);
 
@@ -17,6 +17,7 @@ const stories = (await getCollection('stories'))
 
 const readMin = (body = '') => Math.max(1, Math.round(body.split(/\s+/).length / 200));
 const amounts = [500, 1000, 2500, 5000];
+const headline = impact.counters[0];
 const ctaLabel: Record<string, string> = {
   donate: 'Learn more',
   scholarship: 'Apply now',
@@ -31,53 +32,70 @@ const ctaHref: Record<string, string> = {
 
 <BaseLayout>
   <!-- HERO -->
-  <section class="relative bg-green-50">
-    <div class="max-w-7xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
-      <div>
-        <h1 class="text-4xl md:text-5xl lg:text-6xl text-ink">{site.tagline}</h1>
-        <p class="mt-6 text-lg md:text-xl text-ink/80 max-w-xl">
-          MayWe provides hygiene infrastructure and scholarships to tribal and rural
-          girls in India — so a clean, safe school and a bright future are not a
-          privilege, but the norm.
+  <section class="hero-wash relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 pt-14 md:pt-20 pb-20 md:pb-28 grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-center">
+      <div class="hero-stagger">
+        <span class="kicker">Hygiene &amp; education for rural girls</span>
+        <h1 class="mt-5 font-display text-[2.9rem] sm:text-6xl lg:text-[4.1rem] leading-[1.02] text-ink">
+          Every girl deserves to <span class="italic text-green-700">stay in school.</span>
+        </h1>
+        <p class="mt-6 text-lg md:text-xl text-ink/75 max-w-xl leading-relaxed">
+          MayWe builds clean toilets and safe water in tribal and rural schools, and funds
+          scholarships for bright girls — so a dignified school and a future are the norm,
+          not a privilege.
         </p>
-        <div class="mt-8 flex flex-wrap gap-4">
+        <div class="mt-9 flex flex-wrap gap-4">
           <Button href="/donate" variant="accent">Donate Now</Button>
-          <Button href="/impact" variant="outline">Our Impact →</Button>
+          <Button href="/impact" variant="outline">See our impact →</Button>
         </div>
+        <p class="mt-7 text-sm text-muted flex items-center gap-2">
+          <span class="text-green-700" aria-hidden="true">●</span>
+          Tax-deductible under 80G · 100% of our work is in India
+        </p>
       </div>
-      <div class="reveal">
-        <Placeholder src="/images/hero.webp" label="Hero photo — girls in a classroom" alt="Rural schoolgirls in a classroom" ratio="4/3" class="shadow-[var(--shadow-card)]" />
+
+      <div class="hero-art relative">
+        <div class="absolute -inset-3 -rotate-2 rounded-[2.2rem] bg-gradient-to-br from-marigold/30 via-saffron-700/10 to-teal-500/20"></div>
+        <div class="relative rounded-[1.8rem] overflow-hidden shadow-[var(--shadow-card)] rotate-1">
+          <Placeholder src="/images/hero.webp" label="Hero photo — girls in a classroom" alt="Rural schoolgirls in a classroom" ratio="4/3" />
+        </div>
+        <div class="absolute -bottom-5 -left-3 sm:-left-6 card px-5 py-3.5 flex items-center gap-3 -rotate-2">
+          <span class="font-display text-3xl font-semibold text-green-700">
+            {headline.value.toLocaleString('en-IN')}{headline.suffix}
+          </span>
+          <span class="text-[0.7rem] font-bold uppercase tracking-wider text-muted leading-tight">
+            {headline.label.replace(' ', '\n')}
+          </span>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- IMPACT COUNTERS -->
-  <section class="bg-white">
-    <div class="max-w-7xl mx-auto px-4 py-16">
-      <SectionHeading eyebrow="Our impact so far" title="Numbers behind the mission" class="mb-10" />
+  <section>
+    <div class="max-w-7xl mx-auto px-4 py-20">
+      <SectionHeading eyebrow="Our impact so far" title="Numbers behind the mission" class="mb-12" />
       <ImpactCounters />
-      <p class="mt-6 text-center">
-        <a href="/impact" class="font-semibold text-green-700 hover:text-green-900">See the full impact →</a>
+      <p class="mt-8 text-center">
+        <a href="/impact" class="font-semibold text-green-700 hover:text-green-900 underline underline-offset-4 decoration-marigold/50">See the full impact →</a>
       </p>
     </div>
   </section>
 
   <!-- PROGRAMS -->
-  <section class="bg-green-50">
-    <div class="max-w-7xl mx-auto px-4 py-16">
-      <SectionHeading eyebrow="What we do" title="Our programs" class="mb-10" />
+  <section class="bg-cream border-y border-[rgba(54,38,18,0.06)]">
+    <div class="max-w-7xl mx-auto px-4 py-20">
+      <SectionHeading eyebrow="What we do" title="Three connected programs" subtitle="Keeping bright rural girls in school takes more than one thing." class="mb-12" />
       <div class="grid md:grid-cols-3 gap-6">
         {
           programs.map((p) => (
-            <div class="reveal flex flex-col bg-white rounded-xl p-7 shadow-[var(--shadow-card)] transition-transform hover:-translate-y-1">
-              <div class="text-4xl mb-4" aria-hidden="true">{p.data.icon}</div>
-              <h3 class="text-xl mb-2">{p.data.title}</h3>
-              <p class="text-ink/80 flex-1">{p.data.summary}</p>
-              <div class="mt-5">
-                <a href={ctaHref[p.data.cta]} class="font-semibold text-green-700 hover:text-green-900">
-                  {ctaLabel[p.data.cta]} →
-                </a>
-              </div>
+            <div class="reveal card group flex flex-col p-8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_44px_-22px_rgba(54,38,18,0.4)]">
+              <div class="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center text-3xl mb-5" aria-hidden="true">{p.data.icon}</div>
+              <h3 class="font-display text-2xl mb-3">{p.data.title}</h3>
+              <p class="text-ink/75 leading-relaxed flex-1">{p.data.summary}</p>
+              <a href={ctaHref[p.data.cta]} class="mt-6 inline-flex items-center gap-1.5 font-semibold text-green-700 group-hover:gap-2.5 transition-all">
+                {ctaLabel[p.data.cta]} <span aria-hidden="true">→</span>
+              </a>
             </div>
           ))
         }
@@ -86,9 +104,12 @@ const ctaHref: Record<string, string> = {
   </section>
 
   <!-- LATEST STORIES -->
-  <section class="bg-white">
-    <div class="max-w-7xl mx-auto px-4 py-16">
-      <SectionHeading eyebrow="From the field" title="Latest stories" class="mb-10" />
+  <section>
+    <div class="max-w-7xl mx-auto px-4 py-20">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12">
+        <SectionHeading align="left" eyebrow="From the field" title="Latest stories" />
+        <a href="/stories" class="hidden sm:inline-flex items-center gap-1.5 font-semibold text-green-700 hover:gap-2.5 transition-all whitespace-nowrap">View all stories <span aria-hidden="true">→</span></a>
+      </div>
       <div class="grid md:grid-cols-3 gap-6">
         {
           stories.map((s) => (
@@ -105,30 +126,31 @@ const ctaHref: Record<string, string> = {
           ))
         }
       </div>
-      <p class="mt-10 text-center">
+      <p class="mt-12 text-center sm:hidden">
         <Button href="/stories" variant="outline">View all stories →</Button>
       </p>
     </div>
   </section>
 
   <!-- DONATE CTA -->
-  <section class="bg-green-900 text-white">
-    <div class="max-w-4xl mx-auto px-4 py-16 text-center">
-      <h2 class="text-3xl md:text-4xl text-white">Help a girl stay in school.</h2>
-      <p class="mt-4 text-white/85 text-lg">Choose an amount — every rupee stays in India, close to the girls.</p>
-      <div class="mt-8 flex flex-wrap justify-center gap-3">
+  <section class="panel-deep">
+    <div class="max-w-4xl mx-auto px-4 py-20 text-center">
+      <span class="kicker mb-5" style="color:#f2c98a">Your gift, their future</span>
+      <h2 class="font-display text-4xl md:text-5xl leading-tight">Help a girl stay in school.</h2>
+      <p class="mt-5 text-[#f4ead8]/85 text-lg">Every rupee stays in India, close to the girls. Pick an amount to begin.</p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
         {
           amounts.map((a) => (
             <a
               href="/donate"
-              class="border-2 border-white/70 hover:bg-white hover:text-green-900 text-white font-semibold rounded-lg px-6 py-3 transition min-h-[44px] inline-flex items-center"
+              class="border border-white/40 hover:border-marigold hover:bg-marigold/15 text-white font-semibold rounded-full px-7 py-3 transition-all min-h-[46px] inline-flex items-center"
             >
               ₹{a.toLocaleString('en-IN')}
             </a>
           ))
         }
       </div>
-      <div class="mt-8">
+      <div class="mt-9">
         <Button href="/donate" variant="accent">Donate Now →</Button>
       </div>
     </div>
@@ -136,8 +158,8 @@ const ctaHref: Record<string, string> = {
 
   <!-- VOLUNTEER STRIP -->
   <section class="bg-saffron-100">
-    <div class="max-w-7xl mx-auto px-4 py-10 flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
-      <p class="text-lg font-semibold text-ink">Share your expertise. Change a life.</p>
+    <div class="max-w-7xl mx-auto px-4 py-12 flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-4 text-center">
+      <p class="font-display text-2xl text-ink">Share your expertise. Change a life.</p>
       <Button href="/volunteer" variant="primary">Become a Mentor →</Button>
     </div>
   </section>
