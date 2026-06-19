@@ -58,5 +58,9 @@ Connect the Content Manager (`/admin`) and finish setup using **`docs/deployment
 ## Documentation
 
 See **`docs/`**: V3 plan, wireframes, donation-provider comparison, founder guide,
-deployment guide and the pre-launch content checklist. Start with
-`docs/founder-guide.md` (non-technical) and `docs/deployment.md`.
+deployment guide and the pre-launch content checklist.
+
+**For editors, start with `docs/playbook.md`** — a plain-English, step-by-step
+guide to writing stories, changing images and numbers, and the git pull/push
+routine. (`docs/founder-guide.md` is the shorter overview; `docs/image-guide.md`
+covers photos/videos; `docs/deployment.md` covers going live.)
