@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { forms, contact, whatsappLink, site } from '../config';
+
+const field = 'w-full rounded-lg border border-black/15 px-4 py-3 min-h-[44px] focus:border-green-700 bg-white';
+const waHref = whatsappLink('Hi MayWe, I have a question.');
+---
+
+<BaseLayout title="Contact" description="Get in touch with MayWe — questions, partnerships, media or general enquiries.">
+  <PageHero title="Contact MayWe" subtitle="We'd love to hear from you." />
+
+  <section class="bg-white">
+    <div class="max-w-5xl mx-auto px-4 py-16 grid md:grid-cols-5 gap-10 items-start">
+      <form action="https://api.web3forms.com/submit" method="POST" class="md:col-span-3 space-y-4">
+        <input type="hidden" name="access_key" value={forms.web3formsKey} />
+        <input type="hidden" name="subject" value="New contact form message" />
+        <input type="hidden" name="from_name" value={`${site.name} — Contact form`} />
+        <input type="hidden" name="redirect" value={`${site.url}/thank-you?type=contact`} />
+        <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+
+        <div><label class="block text-sm font-medium mb-1" for="ct-name">Name *</label><input id="ct-name" class={field} name="Name" required /></div>
+        <div><label class="block text-sm font-medium mb-1" for="ct-email">Email *</label><input id="ct-email" type="email" class={field} name="Email" required /></div>
+        <div>
+          <label class="block text-sm font-medium mb-1" for="ct-subject">Subject</label>
+          <select id="ct-subject" name="Subject" class={field}>
+            <option>General enquiry</option><option>Donation</option><option>Scholarship</option><option>Volunteering</option><option>CSR / Partnership</option><option>Media</option><option>Other</option>
+          </select>
+        </div>
+        <div><label class="block text-sm font-medium mb-1" for="ct-msg">Message *</label><textarea id="ct-msg" name="Message" rows="5" class={field} required></textarea></div>
+        <button type="submit" class="bg-green-700 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-900 transition min-h-[44px]">Send message →</button>
+      </form>
+
+      <aside class="md:col-span-2 bg-green-50 rounded-xl p-8 space-y-3">
+        <h2 class="text-xl">Reach us directly</h2>
+        <p class="text-ink/85">✉ <a href={`mailto:${contact.email}`} class="underline text-green-700">{contact.email}</a></p>
+        <p class="text-ink/85">📍 {contact.location}</p>
+        <p class="text-ink/85">💬 <a href={waHref} target="_blank" rel="noopener" class="underline text-green-700">Chat on WhatsApp</a></p>
+        <p class="text-sm text-muted pt-2">We respond within 2 business days.</p>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { forms, whatsappLink, site } from '../config';
+
+const field = 'w-full rounded-lg border border-black/15 px-4 py-3 min-h-[44px] focus:border-green-700 bg-white';
+const waHref = whatsappLink("Hi MayWe, I'd like to volunteer as a mentor.");
+
+const involves = [
+  { icon: '💬', text: 'Monthly 30-minute online calls with a student' },
+  { icon: '🧭', text: 'Career and study guidance' },
+  { icon: '🏫', text: 'Optional field visits, 1–2 a year' },
+  { icon: '📚', text: 'Sharing resources and opportunities' },
+  { icon: '🌟', text: 'Inspiring by example' },
+];
+const benefits = [
+  { icon: '💚', title: 'Real impact', desc: 'Directly change the trajectory of a girl’s life.' },
+  { icon: '🏅', title: 'Recognition', desc: 'Featured as part of the MayWe mentor network.' },
+  { icon: '🤝', title: 'Network', desc: 'Join a community of like-minded professionals.' },
+  { icon: '📜', title: 'Certificate', desc: 'Receive a volunteer certificate of contribution.' },
+];
+---
+
+<BaseLayout title="Volunteer / Mentor" description="Become a MayWe mentor — give a few hours a month to guide a rural girl's education and career.">
+  <section class="bg-gradient-to-r from-saffron-700 to-green-700 text-white">
+    <div class="max-w-7xl mx-auto px-4 py-14 md:py-20">
+      <h1 class="text-4xl md:text-5xl text-white">Become a MayWe Mentor</h1>
+      <p class="mt-4 text-white/90 text-lg">Give 2 hours. Change a life.</p>
+    </div>
+  </section>
+
+  <!-- WHAT IT INVOLVES -->
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-10">
+      <div>
+        <SectionHeading align="left" eyebrow="The role" title="What mentoring involves" class="mb-6" />
+        <ul class="space-y-3">
+          {involves.map((i) => (
+            <li class="flex gap-3 text-ink/85"><span class="text-2xl" aria-hidden="true">{i.icon}</span><span>{i.text}</span></li>
+          ))}
+        </ul>
+      </div>
+      <div class="bg-green-50 rounded-xl p-8 self-start">
+        <h3 class="text-xl mb-4">Time commitment</h3>
+        <ul class="space-y-2 text-ink/85">
+          <li><strong>Time:</strong> 2–4 hours / month</li>
+          <li><strong>Mode:</strong> Online or in-person</li>
+          <li><strong>Duration:</strong> 6-month commitment</li>
+          <li><strong>Language:</strong> Hindi / English</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="bg-green-50">
+    <div class="max-w-7xl mx-auto px-4 py-16">
+      <SectionHeading eyebrow="Why mentor" title="What you'll gain" class="mb-10" />
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {benefits.map((b) => (
+          <div class="reveal bg-white rounded-xl p-6 text-center shadow-[var(--shadow-card)]">
+            <div class="text-3xl mb-3" aria-hidden="true">{b.icon}</div>
+            <h3 class="text-lg mb-2">{b.title}</h3>
+            <p class="text-sm text-ink/80">{b.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGN-UP FORM -->
+  <section class="bg-white">
+    <div class="max-w-2xl mx-auto px-4 py-16">
+      <SectionHeading eyebrow="Join us" title="Mentor sign-up" class="mb-8" />
+      <form action="https://api.web3forms.com/submit" method="POST" class="space-y-4">
+        <input type="hidden" name="access_key" value={forms.web3formsKey} />
+        <input type="hidden" name="subject" value="New volunteer / mentor sign-up" />
+        <input type="hidden" name="from_name" value={`${site.name} — Volunteer form`} />
+        <input type="hidden" name="redirect" value={`${site.url}/thank-you?type=volunteer`} />
+        <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="block text-sm font-medium mb-1" for="v-name">Full name *</label><input id="v-name" class={field} type="text" name="Full name" required /></div>
+          <div><label class="block text-sm font-medium mb-1" for="v-email">Email *</label><input id="v-email" class={field} type="email" name="Email" required /></div>
+          <div><label class="block text-sm font-medium mb-1" for="v-phone">Phone</label><input id="v-phone" class={field} type="tel" name="Phone" /></div>
+          <div><label class="block text-sm font-medium mb-1" for="v-city">City</label><input id="v-city" class={field} type="text" name="City" /></div>
+          <div><label class="block text-sm font-medium mb-1" for="v-prof">Current profession</label><input id="v-prof" class={field} type="text" name="Profession" /></div>
+          <div><label class="block text-sm font-medium mb-1" for="v-exp">Areas of expertise</label><input id="v-exp" class={field} type="text" name="Areas of expertise" /></div>
+        </div>
+        <div>
+          <span class="block text-sm font-medium mb-1">Preferred mode</span>
+          <div class="flex flex-wrap gap-4 text-ink/85">
+            <label class="flex items-center gap-2"><input type="radio" name="Mode" value="Online" checked /> Online</label>
+            <label class="flex items-center gap-2"><input type="radio" name="Mode" value="In-person" /> In-person</label>
+            <label class="flex items-center gap-2"><input type="radio" name="Mode" value="Both" /> Both</label>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1" for="v-hours">Hours available per month</label>
+          <select id="v-hours" name="Hours per month" class={field}>
+            <option>1–2 hours</option><option>2–4 hours</option><option>4+ hours</option>
+          </select>
+        </div>
+        <div><label class="block text-sm font-medium mb-1" for="v-motiv">Motivation statement</label><textarea id="v-motiv" name="Motivation" rows="4" class={field}></textarea></div>
+        <div><label class="block text-sm font-medium mb-1" for="v-li">LinkedIn URL (optional)</label><input id="v-li" class={field} type="url" name="LinkedIn" /></div>
+
+        <button type="submit" class="w-full bg-green-700 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-900 transition min-h-[44px]">Submit sign-up →</button>
+        <p class="text-center text-sm text-muted">Or chat with us: <a href={waHref} target="_blank" rel="noopener" class="underline text-green-700 font-semibold">message us on WhatsApp</a></p>
+      </form>
+    </div>
+  </section>
+</BaseLayout>

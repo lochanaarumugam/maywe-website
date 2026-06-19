@@ -1,0 +1,107 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import StoryCard from '../../components/StoryCard.astro';
+import Button from '../../components/Button.astro';
+import { STORY_CATEGORIES } from '../../content.config';
+
+const stories = (await getCollection('stories'))
+  .filter((s) => !s.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const readMin = (body = '') => Math.max(1, Math.round(body.split(/\s+/).length / 200));
+const counts = Object.fromEntries(
+  STORY_CATEGORIES.map((c) => [c, stories.filter((s) => s.data.category === c).length])
+);
+const tabs = ['All', ...STORY_CATEGORIES];
+---
+
+<BaseLayout title="Stories" description="Stories from the field — hygiene, scholarships, events and impact from MayWe's work with rural girls.">
+  <PageHero title="Stories from the Field" subtitle="What's changing, in the words of the people living it." />
+
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-12 grid lg:grid-cols-4 gap-10">
+      <div class="lg:col-span-3">
+        <!-- FILTER TABS -->
+        <div class="flex flex-wrap gap-2 mb-8" role="tablist" aria-label="Filter stories by category">
+          {
+            tabs.map((t, i) => (
+              <button
+                class:list={[
+                  'story-tab text-sm font-semibold rounded-full px-4 py-2 border transition min-h-[44px]',
+                  i === 0 ? 'bg-green-700 text-white border-green-700' : 'bg-white text-ink border-black/15 hover:border-green-700',
+                ]}
+                data-filter={t}
+              >
+                {t}
+              </button>
+            ))
+          }
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-6" id="story-grid">
+          {
+            stories.map((s) => (
+              <div class="story-item" data-category={s.data.category}>
+                <StoryCard
+                  href={`/stories/${s.id}`}
+                  title={s.data.title}
+                  excerpt={s.data.excerpt}
+                  category={s.data.category}
+                  date={s.data.date}
+                  cover={s.data.cover}
+                  coverAlt={s.data.coverAlt}
+                  readMin={readMin(s.body)}
+                />
+              </div>
+            ))
+          }
+        </div>
+        <p id="no-results" class="hidden text-center text-muted py-10">No stories in this category yet.</p>
+      </div>
+
+      <!-- SIDEBAR -->
+      <aside class="space-y-8">
+        <div class="bg-green-900 text-white rounded-xl p-6 text-center">
+          <p class="font-display text-xl mb-3">Help a girl stay in school.</p>
+          <Button href="/donate" variant="accent">Donate Now</Button>
+        </div>
+        <div class="bg-green-50 rounded-xl p-6">
+          <h2 class="text-lg mb-3">Categories</h2>
+          <ul class="space-y-2 text-ink/85">
+            {STORY_CATEGORIES.map((c) => (
+              <li class="flex justify-between"><span>{c}</span><span class="text-muted">({counts[c]})</span></li>
+            ))}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <script>
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.story-tab');
+    const items = document.querySelectorAll<HTMLElement>('.story-item');
+    const noResults = document.getElementById('no-results');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const filter = tab.dataset.filter;
+        tabs.forEach((t) => {
+          const active = t === tab;
+          t.classList.toggle('bg-green-700', active);
+          t.classList.toggle('text-white', active);
+          t.classList.toggle('border-green-700', active);
+          t.classList.toggle('bg-white', !active);
+          t.classList.toggle('text-ink', !active);
+        });
+        let visible = 0;
+        items.forEach((item) => {
+          const show = filter === 'All' || item.dataset.category === filter;
+          item.classList.toggle('hidden', !show);
+          if (show) visible++;
+        });
+        noResults?.classList.toggle('hidden', visible !== 0);
+      });
+    });
+  </script>
+</BaseLayout>

@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { contact } from '../config';
+---
+
+<BaseLayout title="Privacy Policy" description="How MayWe collects, uses and protects personal data, including the data of minors.">
+  <PageHero title="Privacy Policy" subtitle="How we handle your data — and our special duty of care to children." />
+  <section class="bg-white">
+    <div class="max-w-3xl mx-auto px-4 py-16 space-y-6 text-ink/85 leading-relaxed">
+      <p class="text-sm text-muted italic">Last updated: 2026. This is a starting template — have it reviewed by a lawyer before launch.</p>
+
+      <div>
+        <h2 class="text-2xl mb-2">What we collect</h2>
+        <p>We collect information you choose to give us through our forms: name and email (newsletter, contact), volunteer details, CSR inquiry details, and — for scholarship applicants — academic, family and identity information together with supporting documents.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl mb-2">Children's data</h2>
+        <p>MayWe works with minors. We take particular care with their data:</p>
+        <ul class="list-disc pl-6 mt-2 space-y-1">
+          <li><strong>What we collect:</strong> for scholarship applicants who are minors, this may include name, age, school, marks, family income, category and uploaded documents (marksheet, income/caste certificate, photograph).</li>
+          <li><strong>Retention:</strong> sensitive scholarship documents are deleted after each selection cycle closes (within 60 days of the cycle ending).</li>
+          <li><strong>Deletion rights:</strong> a guardian may request deletion of a child's data at any time by emailing us.</li>
+          <li><strong>Images of minors</strong> are published only with written guardian consent (media-release form on file).</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-2xl mb-2">How we use your data</h2>
+        <p>To respond to you, process applications and inquiries, send updates you've opted into, and meet our legal and reporting obligations. We do not sell your data.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl mb-2">Third-party services</h2>
+        <p>We use trusted third parties to run parts of this site — a payment provider for donations (we never see your card details), form and email services, and analytics. Each processes data under its own privacy terms.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl mb-2">Contact</h2>
+        <p>For any privacy request, including data deletion, email <a href={`mailto:${contact.email}`} class="underline text-green-700">{contact.email}</a>.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

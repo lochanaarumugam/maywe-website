@@ -1,0 +1,38 @@
+---
+import Placeholder from './Placeholder.astro';
+
+interface Props {
+  href: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  date: Date;
+  cover?: string;
+  coverAlt?: string;
+  readMin?: number;
+}
+const { href, title, excerpt, category, date, cover, coverAlt, readMin } = Astro.props;
+const dateStr = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+
+<article
+  class="reveal group flex flex-col bg-white rounded-xl overflow-hidden shadow-[var(--shadow-card)] transition-transform duration-200 hover:-translate-y-1"
+>
+  <a href={href} class="block">
+    <Placeholder src={cover} alt={coverAlt ?? title} label="Story photo" ratio="16/9" />
+  </a>
+  <div class="flex flex-col flex-1 p-5">
+    <span
+      class="self-start text-xs font-semibold uppercase tracking-wide text-green-700 bg-green-100 rounded-full px-3 py-1 mb-3"
+      >{category}</span
+    >
+    <h3 class="text-xl mb-2">
+      <a href={href} class="hover:text-green-700">{title}</a>
+    </h3>
+    <p class="text-sm text-muted mb-3">
+      {dateStr}{readMin ? ` · ${readMin} min read` : ''}
+    </p>
+    <p class="text-ink/80 mb-4 flex-1">{excerpt}</p>
+    <a href={href} class="font-semibold text-green-700 hover:text-green-900">Read more →</a>
+  </div>
+</article>

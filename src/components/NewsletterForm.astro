@@ -1,0 +1,27 @@
+---
+import { forms } from '../config';
+// Newsletter signup. If a Brevo embed action URL is configured we POST to it;
+// otherwise we fall back to Web3Forms so signups still reach the inbox.
+const action = forms.newsletterAction || 'https://api.web3forms.com/submit';
+const usingWeb3 = !forms.newsletterAction;
+---
+
+<form action={action} method="POST" class="flex flex-col sm:flex-row gap-3 w-full max-w-md">
+  {usingWeb3 && <input type="hidden" name="access_key" value={forms.web3formsKey} />}
+  {usingWeb3 && <input type="hidden" name="subject" value="New newsletter signup" />}
+  <input type="hidden" name="from_name" value="MayWe Newsletter" />
+  <label class="sr-only" for="nl-email">Email address</label>
+  <input
+    id="nl-email"
+    type="email"
+    name="email"
+    required
+    placeholder="Your email address"
+    class="flex-1 rounded-lg border border-black/15 px-4 py-3 text-ink bg-white min-h-[44px] focus:border-green-700"
+  />
+  <button
+    type="submit"
+    class="bg-green-700 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-900 transition min-h-[44px] whitespace-nowrap"
+    >Subscribe</button
+  >
+</form>

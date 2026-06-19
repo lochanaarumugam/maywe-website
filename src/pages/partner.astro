@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { forms, contact, whatsappLink, site } from '../config';
+import impact from '../data/impact.json';
+
+const field = 'w-full rounded-lg border border-black/15 px-4 py-3 min-h-[44px] focus:border-green-700 bg-white';
+const waHref = whatsappLink("Hi MayWe, I'd like to learn about MayWe's CSR partnership opportunities.");
+
+const why = [
+  '75% of funds go directly to programs',
+  'Independently audited accounts',
+  'Quarterly impact reports',
+  'Named sponsorship opportunities',
+  'Field visits and documentation',
+  'Annual report + social media mention',
+];
+
+const schedule = [
+  { head: '(ii) Promoting education', program: 'Scholarships, mentorship' },
+  { head: '(x) Rural development', program: 'Toilet & handwash stations' },
+  { head: '(iii) Gender equality', program: 'All programs (girls only)' },
+  { head: '(i) Eradicating poverty', program: 'Hygiene kits, health education' },
+];
+
+const docs = ['Trust Deed / MoA', 'CSR-1 Form', '12A Certificate', '80G Certificate', 'Latest Audited Accounts'];
+const glance = impact.counters;
+const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
+---
+
+<BaseLayout title="Partner with Us (CSR)" description="Partner with MayWe for your CSR mandate — Schedule VII aligned programs in education, hygiene and gender equality, with full transparency.">
+  <section class="bg-green-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 py-14 md:py-20">
+      <h1 class="text-4xl md:text-5xl text-white">CSR & Social Impact Partnerships</h1>
+      <p class="mt-4 text-white/90 text-lg">Align your CSR mandate with measurable impact.</p>
+    </div>
+  </section>
+
+  <!-- WHY MAYWE -->
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-start">
+      <div>
+        <SectionHeading align="left" eyebrow="Why partner" title="Why MayWe?" class="mb-6" />
+        <ul class="space-y-3">
+          {why.map((w) => (
+            <li class="flex gap-2 text-ink/85"><span class="text-green-700" aria-hidden="true">✅</span><span>{w}</span></li>
+          ))}
+        </ul>
+      </div>
+      <div class="bg-green-900 text-white rounded-xl p-8">
+        <h3 class="text-xl text-white mb-4">MayWe at a glance</h3>
+        <ul class="space-y-2 text-green-50">
+          {glance.map((g) => (
+            <li class="flex justify-between border-b border-white/10 py-1">
+              <span>{g.label}</span>
+              <span class="font-semibold">{g.format === 'inr' ? inr(g.value) : g.value.toLocaleString('en-IN') + g.suffix}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE VII -->
+  <section class="bg-green-50">
+    <div class="max-w-5xl mx-auto px-4 py-16">
+      <SectionHeading eyebrow="Companies Act 2013" title="Schedule VII alignment" subtitle="MayWe's programs map directly to recognised CSR activity heads." class="mb-10" />
+      <div class="overflow-x-auto bg-white rounded-xl shadow-[var(--shadow-card)]">
+        <table class="w-full text-left">
+          <thead class="bg-green-100 text-ink">
+            <tr><th class="px-5 py-3">Schedule VII head</th><th class="px-5 py-3">MayWe program</th><th class="px-5 py-3">Eligible?</th></tr>
+          </thead>
+          <tbody>
+            {schedule.map((s) => (
+              <tr class="border-t border-black/5">
+                <td class="px-5 py-3">{s.head}</td>
+                <td class="px-5 py-3">{s.program}</td>
+                <td class="px-5 py-3 text-green-700 font-semibold">✓ Yes</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRANSPARENCY PACK -->
+  <section class="bg-white">
+    <div class="max-w-5xl mx-auto px-4 py-16">
+      <SectionHeading eyebrow="Due diligence" title="Transparency pack" subtitle="For serious CSR due diligence, we make the following available." class="mb-8" />
+      <div class="flex flex-wrap justify-center gap-3">
+        {docs.map((d) => (
+          <a href="/contact" class="inline-flex items-center gap-2 border border-green-700 text-green-700 rounded-lg px-4 py-2 hover:bg-green-50 text-sm font-medium">
+            <span aria-hidden="true">📄</span> {d}
+          </a>
+        ))}
+      </div>
+      <p class="text-center text-sm text-muted mt-4">Documents are shared on request with CSR teams conducting due diligence.</p>
+    </div>
+  </section>
+
+  <!-- INQUIRY FORM -->
+  <section class="bg-green-50">
+    <div class="max-w-5xl mx-auto px-4 py-16 grid md:grid-cols-5 gap-10 items-start">
+      <div class="md:col-span-2">
+        <h2 class="text-2xl mb-4">Talk to us</h2>
+        <p class="text-ink/80 mb-4">Reach out and we'll share our impact materials and discuss how a partnership could work for your CSR goals.</p>
+        <p class="text-ink/85 mb-2">✉ <a href={`mailto:${contact.email}`} class="underline text-green-700">{contact.email}</a></p>
+        <a href={waHref} target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-[#25D366] text-white font-semibold px-5 py-3 rounded-lg mt-2 min-h-[44px]">
+          💬 Talk to us on WhatsApp
+        </a>
+      </div>
+
+      <form action="https://api.web3forms.com/submit" method="POST" class="md:col-span-3 bg-white rounded-xl p-8 shadow-[var(--shadow-card)] space-y-4">
+        <input type="hidden" name="access_key" value={forms.web3formsKey} />
+        <input type="hidden" name="subject" value="New CSR partnership inquiry" />
+        <input type="hidden" name="from_name" value={`${site.name} — CSR form`} />
+        <input type="hidden" name="redirect" value={`${site.url}/thank-you?type=csr`} />
+        <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+        <h3 class="text-xl">CSR partnership inquiry</h3>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="block text-sm font-medium mb-1" for="c-company">Company name *</label><input id="c-company" class={field} name="Company name" required /></div>
+          <div><label class="block text-sm font-medium mb-1" for="c-person">Contact person *</label><input id="c-person" class={field} name="Contact person" required /></div>
+          <div><label class="block text-sm font-medium mb-1" for="c-email">Email *</label><input id="c-email" class={field} type="email" name="Email" required /></div>
+          <div><label class="block text-sm font-medium mb-1" for="c-phone">Phone</label><input id="c-phone" class={field} type="tel" name="Phone" /></div>
+          <div><label class="block text-sm font-medium mb-1" for="c-sector">Sector</label><input id="c-sector" class={field} name="Sector" /></div>
+          <div>
+            <label class="block text-sm font-medium mb-1" for="c-budget">CSR budget range</label>
+            <select id="c-budget" name="Budget range" class={field}>
+              <option>₹5L–10L</option><option>₹10L–25L</option><option>₹25L–50L</option><option>₹50L+</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1" for="c-interest">Area of interest</label>
+          <select id="c-interest" name="Area of interest" class={field}>
+            <option>Hygiene</option><option>Education</option><option>Both</option>
+          </select>
+        </div>
+        <div><label class="block text-sm font-medium mb-1" for="c-msg">Message</label><textarea id="c-msg" name="Message" rows="4" class={field}></textarea></div>
+        <button type="submit" class="w-full bg-green-700 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-900 transition min-h-[44px]">Submit inquiry →</button>
+      </form>
+    </div>
+  </section>
+</BaseLayout>

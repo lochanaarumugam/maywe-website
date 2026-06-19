@@ -1,0 +1,16 @@
+{
+  "_note": "SAMPLE figures — replace with MayWe's real numbers. Edited here or via the CMS. Funds are whole rupees.",
+  "counters": [
+    { "label": "Girls Supported", "value": 2400, "suffix": "+", "format": "plain", "icon": "👧" },
+    { "label": "Schools Served", "value": 48, "suffix": "", "format": "plain", "icon": "🏫" },
+    { "label": "Funds Raised", "value": 3200000, "suffix": "", "format": "inr", "icon": "💰" },
+    { "label": "Hygiene Kits Distributed", "value": 9600, "suffix": "+", "format": "plain", "icon": "🧼" }
+  ],
+  "allocation": [
+    { "label": "Direct Programs", "pct": 75 },
+    { "label": "Admin", "pct": 15 },
+    { "label": "Fundraising", "pct": 10 }
+  ],
+  "annualReportUrl": "",
+  "annualReportYear": "2025"
+}

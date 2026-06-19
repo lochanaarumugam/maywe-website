@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { whatsappLink } from '../config';
+
+const now = new Date();
+const all = (await getCollection('events')).sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+const upcoming = all.filter((e) => e.data.date >= now);
+const past = all.filter((e) => e.data.date < now).reverse();
+
+const fmt = (d: Date) => d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+const regLink = (e: (typeof all)[number]) =>
+  e.data.registerUrl || whatsappLink(`Hi MayWe, I'd like to register for: ${e.data.title}`);
+---
+
+<BaseLayout title="Events" description="Upcoming MayWe workshops, hygiene drives and awareness sessions. Register to take part.">
+  <PageHero title="Upcoming Events & Workshops" subtitle="Hygiene drives, awareness sessions and mentor orientations." />
+
+  <section class="bg-white">
+    <div class="max-w-5xl mx-auto px-4 py-16">
+      {
+        upcoming.length === 0 ? (
+          <p class="text-center text-muted">No upcoming events right now — check back soon, or <a href="/contact" class="underline text-green-700">get in touch</a>.</p>
+        ) : (
+          <div class="space-y-6">
+            {upcoming.map((e) => (
+              <article class="reveal grid sm:grid-cols-3 gap-6 bg-white rounded-xl overflow-hidden shadow-[var(--shadow-card)]">
+                <div class="sm:col-span-1">
+                  <Placeholder src={e.data.cover} label="Event photo" alt={e.data.title} ratio="4/3" class="h-full" />
+                </div>
+                <div class="sm:col-span-2 p-6">
+                  <p class="text-sm font-semibold text-saffron-700">{fmt(e.data.date)}{e.data.time ? ` · ${e.data.time}` : ''} · {e.data.location}</p>
+                  <h2 class="text-xl mt-1 mb-2">{e.data.title}</h2>
+                  <p class="text-ink/80 mb-4">{e.data.description}</p>
+                  <a href={regLink(e)} target="_blank" rel="noopener" class="inline-flex items-center bg-green-700 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-green-900 transition min-h-[44px]">Register now →</a>
+                  {e.data.organiserContact && <p class="mt-3 text-xs text-muted">Organiser: {e.data.organiserContact}</p>}
+                </div>
+              </article>
+            ))}
+          </div>
+        )
+      }
+
+      {
+        past.length > 0 && (
+          <details class="mt-12 group">
+            <summary class="cursor-pointer font-semibold text-green-700 text-lg list-none flex items-center gap-2">
+              <span class="group-open:rotate-90 transition-transform" aria-hidden="true">▸</span> View past events ({past.length})
+            </summary>
+            <ul class="mt-4 space-y-3">
+              {past.map((e) => (
+                <li class="flex flex-col sm:flex-row sm:items-center sm:gap-3 border-b border-black/5 pb-3">
+                  <span class="text-sm text-muted w-40 shrink-0">{fmt(e.data.date)}</span>
+                  <span class="font-medium">{e.data.title}</span>
+                  <span class="text-sm text-muted">· {e.data.location}</span>
+                </li>
+              ))}
+            </ul>
+          </details>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

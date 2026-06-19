@@ -1,62 +1,100 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { legal, shown } from '../config';
+
+const team = (await getCollection('team')).sort((a, b) => a.data.order - b.data.order);
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage="/blog-placeholder-about.jpg"
->
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+<BaseLayout title="About" description="MayWe's story, team and registrations — a not-for-profit for hygiene and girls' education in rural India.">
+  <PageHero title="About MayWe" subtitle="Our story, our team, our commitment." />
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+  <!-- OUR STORY -->
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
+      <div class="reveal">
+        <SectionHeading align="left" eyebrow="Our story" title="Why MayWe exists" class="mb-5" />
+        <div class="space-y-4 text-ink/85">
+          <p>
+            MayWe is a not-for-profit dedicated to improving hygiene and education
+            standards in tribal and rural India, and to empowering economically
+            challenged yet academically gifted girls.
+          </p>
+          <p>
+            We work where a missing toilet or an unaffordable exam fee quietly ends
+            a girl's schooling. By building hygiene infrastructure and funding
+            merit-based scholarships — backed by mentorship and life-skills training
+            — we help bright rural girls stay in school and pursue higher education
+            and leadership.
+          </p>
+          <p class="text-sm text-muted">
+            <em>Replace this section with MayWe's real founding story (300–400 words).</em>
+          </p>
+        </div>
+      </div>
+      <div class="reveal">
+        <Placeholder label="Founders / program photo" alt="MayWe founders with students" ratio="4/3" class="shadow-[var(--shadow-card)]" />
+        <p class="mt-2 text-xs text-muted">Photos of minors are published only with written guardian consent.</p>
+      </div>
+    </div>
+  </section>
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+  <!-- MISSION & VISION -->
+  <section class="bg-green-50">
+    <div class="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-6">
+      <div class="bg-white rounded-xl p-8 shadow-[var(--shadow-card)]">
+        <h3 class="text-2xl text-green-700 mb-3">Mission</h3>
+        <p class="text-ink/85">
+          To enhance academic and hygiene infrastructure in tribal/rural areas, and
+          to provide scholarships, mentorship and life-skill training to bright girls
+          from low-income families.
+        </p>
+      </div>
+      <div class="bg-white rounded-xl p-8 shadow-[var(--shadow-card)]">
+        <h3 class="text-2xl text-green-700 mb-3">Vision</h3>
+        <p class="text-ink/85">
+          Every tribal and rural girl child grows up in a clean, dignified
+          environment, nurtures her skills, and flourishes academically — with the
+          financial assistance she needs to achieve her goals.
+        </p>
+      </div>
+    </div>
+  </section>
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
+  <!-- OUR TEAM -->
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-16">
+      <SectionHeading eyebrow="The people" title="Our team" class="mb-10" />
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          team.map((m) => (
+            <div class="reveal bg-white rounded-xl p-6 text-center shadow-[var(--shadow-card)]">
+              <div class="w-28 h-28 mx-auto mb-4 rounded-full overflow-hidden">
+                <Placeholder src={m.data.photo} label="Photo" alt={m.data.name} ratio="1/1" />
+              </div>
+              <h3 class="text-lg">{m.data.name}</h3>
+              <p class="text-sm font-semibold text-green-700">{m.data.role}</p>
+              <p class="mt-3 text-sm text-ink/80">{m.data.bio}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
-</Layout>
+  <!-- LEGAL & REGISTRATIONS -->
+  <section class="bg-green-50">
+    <div class="max-w-3xl mx-auto px-4 py-16">
+      <SectionHeading eyebrow="Transparency" title="Legal & registrations" class="mb-8" />
+      <div class="bg-white rounded-xl p-8 shadow-[var(--shadow-card)] text-center space-y-2">
+        <p><strong>Registration No:</strong> {shown(legal.registrationNo)}</p>
+        <p><strong>PAN:</strong> {shown(legal.pan)} &nbsp;·&nbsp; <strong>80G No:</strong> {shown(legal.reg80G)} &nbsp;·&nbsp; <strong>12A No:</strong> {shown(legal.reg12A)}</p>
+        <p>{legal.entityType}</p>
+        <p>Registered in {shown(legal.registeredState, '[State]')}, India</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

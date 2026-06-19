@@ -1,0 +1,80 @@
+---
+import impact from '../data/impact.json';
+
+interface Props {
+  size?: 'normal' | 'large';
+  class?: string;
+}
+const { size = 'normal', class: cls = '' } = Astro.props;
+const numCls = size === 'large' ? 'text-4xl md:text-5xl' : 'text-3xl md:text-4xl';
+---
+
+<div class={`grid grid-cols-2 lg:grid-cols-4 gap-4 ${cls}`} data-impact-counters>
+  {
+    impact.counters.map((c) => (
+      <div class="reveal bg-white rounded-xl p-6 text-center shadow-[var(--shadow-card)]">
+        <div class="text-2xl mb-1" aria-hidden="true">{c.icon}</div>
+        <div
+          class={`font-display font-bold text-green-700 ${numCls}`}
+          data-target={c.value}
+          data-format={c.format}
+          data-suffix={c.suffix}
+        >
+          0
+        </div>
+        <div class="mt-1 text-sm font-medium text-muted">{c.label}</div>
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  function formatINR(n: number): string {
+    // Indian grouping: ₹32,00,000
+    return '₹' + n.toLocaleString('en-IN');
+  }
+
+  function animate(el: HTMLElement) {
+    const target = Number(el.dataset.target || '0');
+    const format = el.dataset.format || 'plain';
+    const suffix = el.dataset.suffix || '';
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const render = (val: number) => {
+      const rounded = Math.round(val);
+      el.textContent = (format === 'inr' ? formatINR(rounded) : rounded.toLocaleString('en-IN')) + suffix;
+    };
+    if (reduce) {
+      render(target);
+      return;
+    }
+    const duration = 1600;
+    const start = performance.now();
+    const step = (now: number) => {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+      render(target * eased);
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  document.querySelectorAll('[data-impact-counters]').forEach((group) => {
+    const nums = group.querySelectorAll<HTMLElement>('[data-target]');
+    if (!('IntersectionObserver' in window)) {
+      nums.forEach(animate);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            animate(e.target as HTMLElement);
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { threshold: 0.4 }
+    );
+    nums.forEach((n) => io.observe(n));
+  });
+</script>

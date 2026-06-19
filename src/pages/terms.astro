@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { contact } from '../config';
+---
+
+<BaseLayout title="Terms of Use" description="Terms of use for the MayWe website, donations and applications.">
+  <PageHero title="Terms of Use" subtitle="The basics of using this site." />
+  <section class="bg-white">
+    <div class="max-w-3xl mx-auto px-4 py-16 space-y-6 text-ink/85 leading-relaxed">
+      <p class="text-sm text-muted italic">Last updated: 2026. This is a starting template — have it reviewed by a lawyer before launch.</p>
+
+      <div>
+        <h2 class="text-2xl mb-2">About MayWe</h2>
+        <p>MayWe is a not-for-profit organisation working on hygiene infrastructure and girls' education in tribal and rural India. This website is our primary information and engagement channel.</p>
+      </div>
+      <div>
+        <h2 class="text-2xl mb-2">Donations</h2>
+        <p>Donations are processed by a third-party payment provider. Donations are voluntary and, where eligible, qualify for tax benefits under Section 80G. Receipts are issued by email. Donations are generally non-refundable; for genuine errors, contact us promptly.</p>
+      </div>
+      <div>
+        <h2 class="text-2xl mb-2">Applications & submissions</h2>
+        <p>Information you submit (scholarship, volunteer, CSR, contact) must be accurate. Scholarship selection is at MayWe's discretion based on published criteria. Submitting an application does not guarantee an award.</p>
+      </div>
+      <div>
+        <h2 class="text-2xl mb-2">Content</h2>
+        <p>Content on this site is owned by MayWe unless stated otherwise. Please ask before reproducing it. Photographs of children are published only with guardian consent.</p>
+      </div>
+      <div>
+        <h2 class="text-2xl mb-2">Contact</h2>
+        <p>Questions about these terms? Email <a href={`mailto:${contact.email}`} class="underline text-green-700">{contact.email}</a>.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

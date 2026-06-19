@@ -1,0 +1,136 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import { legal, donate, shown } from '../config';
+import impact from '../data/impact.json';
+
+const campaigns = (await getCollection('campaigns')).sort((a, b) => a.data.order - b.data.order);
+const amounts = [500, 1000, 2500, 5000];
+const barColors = ['bg-green-700', 'bg-teal-500', 'bg-saffron-700'];
+const pct = (raised: number, goal: number) => Math.min(100, Math.round((raised / goal) * 100));
+const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
+---
+
+<BaseLayout title="Donate" description="Donate to MayWe — your gift funds hygiene infrastructure and scholarships for rural girls in India. 80G tax benefits available." whatsapp={true} hideNewsletter={true}>
+  <!-- HEADER -->
+  <section class="bg-gradient-to-r from-green-900 to-teal-500 text-white">
+    <div class="max-w-7xl mx-auto px-4 py-14 md:py-20">
+      <h1 class="text-4xl md:text-5xl text-white">Your gift stays in India, close to the girls.</h1>
+      <p class="mt-4 text-white/90 text-lg max-w-2xl">Every donation funds clean schools and scholarships — and earns you an 80G tax benefit.</p>
+      <p class="mt-4 text-sm text-white/80">80G No: {shown(legal.reg80G)} &nbsp;|&nbsp; PAN: {shown(legal.pan)}</p>
+    </div>
+  </section>
+
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-16 grid lg:grid-cols-3 gap-10">
+      <!-- DONATE PANEL -->
+      <div class="lg:col-span-2">
+        <div class="bg-green-50 rounded-2xl p-8 shadow-[var(--shadow-card)]">
+          <h2 class="text-2xl mb-2">Make a donation</h2>
+          <p class="text-ink/80 mb-6">Choose an amount, or give any sum you like. You'll be taken to our secure payment page (UPI, card or net banking) and emailed an 80G receipt.</p>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+            {
+              amounts.map((a) => (
+                <a
+                  href={donate.general}
+                  target="_blank"
+                  rel="noopener"
+                  class="text-center font-semibold border-2 border-green-700 text-green-700 rounded-lg px-4 py-3 hover:bg-green-700 hover:text-white transition min-h-[44px] inline-flex items-center justify-center"
+                >
+                  {inr(a)}
+                </a>
+              ))
+            }
+          </div>
+
+          <Button href={donate.general} variant="accent" class="w-full" target="_blank" rel="noopener">
+            Donate Securely →
+          </Button>
+
+          <p class="mt-4 text-xs text-muted flex items-center gap-2">
+            <span aria-hidden="true">🔒</span>
+            Payments are processed securely by our payment provider. MayWe never sees your card details.
+          </p>
+
+          <!-- FCRA disclaimer -->
+          {
+            !legal.fcraGranted && (
+              <div class="mt-6 border-l-4 border-saffron-700 bg-saffron-100 p-4 rounded">
+                <p class="text-sm text-ink/85">
+                  <strong>⚠ International donors:</strong> International donations are currently being
+                  processed under our FCRA application. Please <a href="/contact" class="underline font-semibold">contact us</a> to discuss international giving options.
+                </p>
+              </div>
+            )
+          }
+          {
+            legal.fcraGranted && donate.international && (
+              <p class="mt-6 text-sm">
+                Giving from outside India? <a href={donate.international} target="_blank" rel="noopener" class="underline font-semibold text-green-700">Use our international donation page →</a>
+              </p>
+            )
+          }
+        </div>
+      </div>
+
+      <!-- WHERE YOUR MONEY GOES -->
+      <aside>
+        <div class="bg-white rounded-2xl p-6 shadow-[var(--shadow-card)]">
+          <h3 class="text-xl mb-4">Where your money goes</h3>
+          <div class="space-y-4">
+            {
+              impact.allocation.map((a, i) => (
+                <div>
+                  <div class="flex justify-between text-sm font-medium mb-1">
+                    <span>{a.label}</span><span>{a.pct}%</span>
+                  </div>
+                  <div class="h-3 rounded-full bg-green-100 overflow-hidden">
+                    <div class={`h-full ${barColors[i % barColors.length]}`} style={`width:${a.pct}%`} />
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+          <div class="mt-6 border-t border-black/10 pt-4">
+            <h4 class="font-semibold mb-1">80G tax benefit</h4>
+            <p class="text-sm text-ink/80">Donations are eligible for 50% deduction under Section 80G of the Income Tax Act. A receipt is emailed automatically.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- CAMPAIGNS -->
+  <section class="bg-green-50">
+    <div class="max-w-7xl mx-auto px-4 py-16">
+      <h2 class="text-3xl text-center mb-10">Give to a specific cause</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        {
+          campaigns.map((c) => {
+            const p = pct(c.data.raised, c.data.goal);
+            return (
+              <div class="reveal flex flex-col bg-white rounded-xl p-6 shadow-[var(--shadow-card)]">
+                <div class="text-3xl mb-3" aria-hidden="true">{c.data.icon}</div>
+                <h3 class="text-xl mb-2">{c.data.title}</h3>
+                <p class="text-sm text-ink/80 flex-1">{c.data.description}</p>
+                <div class="mt-4">
+                  <div class="h-3 rounded-full bg-green-100 overflow-hidden">
+                    <div class="h-full bg-green-700" style={`width:${p}%`} />
+                  </div>
+                  <p class="mt-2 text-sm text-muted">
+                    {inr(c.data.raised)} raised of {inr(c.data.goal)} · {p}%
+                  </p>
+                </div>
+                <a href={c.data.donateUrl} target="_blank" rel="noopener" class="mt-4 inline-flex items-center justify-center bg-saffron-700 text-white font-semibold rounded-lg px-5 py-3 hover:brightness-95 transition min-h-[44px]">
+                  Donate to this →
+                </a>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

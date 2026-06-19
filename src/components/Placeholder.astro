@@ -1,0 +1,37 @@
+---
+/**
+ * Visual placeholder for images the NGO hasn't supplied yet.
+ * If `src` is provided, renders a real <img>; otherwise a labelled gradient box.
+ * Swap in real images by setting the relevant frontmatter/config field.
+ */
+interface Props {
+  src?: string;
+  alt?: string;
+  label?: string;
+  ratio?: string; // e.g. '16/9', '4/3', '1/1'
+  class?: string;
+}
+const { src, alt = '', label = 'Image', ratio = '16/9', class: cls = '' } = Astro.props;
+---
+
+{
+  src ? (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      class={`w-full h-full object-cover ${cls}`}
+      style={`aspect-ratio:${ratio}`}
+    />
+  ) : (
+    <div
+      class={`ph w-full rounded-xl ${cls}`}
+      style={`aspect-ratio:${ratio}`}
+      role="img"
+      aria-label={alt || label}
+    >
+      {label}
+    </div>
+  )
+}

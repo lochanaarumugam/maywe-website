@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+// Static page; the message is personalised client-side from ?type=...
+---
+
+<BaseLayout title="Thank you" description="Thank you for getting in touch with MayWe.">
+  <section class="bg-green-50">
+    <div class="max-w-2xl mx-auto px-4 py-24 text-center">
+      <div class="text-5xl mb-4" aria-hidden="true">🌱</div>
+      <h1 class="text-4xl text-green-700" id="ty-title">Thank you!</h1>
+      <p class="mt-4 text-lg text-ink/80" id="ty-message">
+        We've received your message and will be in touch soon.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4 justify-center">
+        <Button href="/" variant="primary">Back to home</Button>
+        <Button href="/stories" variant="outline">Read our stories →</Button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type');
+    const msgs: Record<string, string> = {
+      volunteer: "Thanks for signing up to mentor! We'll review your details and reach out about next steps.",
+      csr: "Thank you for your interest in partnering with MayWe. Our team will get back to you with our impact materials.",
+      contact: "We've received your message and will respond within 2 business days.",
+    };
+    if (type && msgs[type]) {
+      const el = document.getElementById('ty-message');
+      if (el) el.textContent = msgs[type];
+    }
+  </script>
+</BaseLayout>

@@ -1,64 +1,62 @@
-# Astro Starter Kit: Blog
+# MayWe — NGO Website
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/astro-blog-starter-template)
+A fast, **static** website for MayWe, a not-for-profit improving hygiene
+infrastructure and funding scholarships for tribal and rural girls in India.
 
-![Astro Template Preview](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
+Deployed on **Cloudflare Workers** (static assets) via the connected GitHub repo —
+every push to `main` triggers a Cloudflare build + deploy. All dynamic work
+(donations, forms, email) is offloaded to free third-party services, so there's
+no server or database to maintain.
 
-<!-- dash-content-start -->
+## Stack
 
-Create a blog with Astro and deploy it on Cloudflare Workers as a [static website](https://developers.cloudflare.com/workers/static-assets/).
+| Job | Tool |
+|---|---|
+| Site / blog build | Astro (static) + `@astrojs/cloudflare` adapter |
+| Styling | Tailwind CSS v4 |
+| Hosting + CDN | Cloudflare Workers (assets) |
+| Founders edit content | Sveltia CMS at `/admin` |
+| Donations + 80G | Razorpay Payment Pages / Danamojo (hosted) |
+| Contact / Volunteer / CSR forms | Web3Forms |
+| Scholarship form | Tally.so (file uploads, no login) |
+| Newsletter + blasts | Brevo |
+| Click-to-chat | `wa.me` links |
 
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-- ✅ Built-in Observability logging
-
-<!-- dash-content-end -->
-
-## Getting Started
-
-Outside of this repo, you can start a new project with this template using [C3](https://developers.cloudflare.com/pages/get-started/c3/) (the `create-cloudflare` CLI):
+## Develop
 
 ```bash
-npm create cloudflare@latest -- --template=cloudflare/templates/astro-blog-starter-template
+npm install
+npm run dev        # http://localhost:4321  (CMS at /admin)
+npm run build      # static build → dist/ (with Cloudflare worker)
+npm run preview    # build + run via wrangler locally
+npm run deploy     # manual wrangler deploy (CI does this automatically on push)
 ```
 
-A live public deployment of this template is available at [https://astro-blog-starter-template.templates.workers.dev](https://astro-blog-starter-template.templates.workers.dev)
+> Requires Node ≥ 22.
 
-## 🚀 Project Structure
+## Configure for MayWe
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+1. **`src/config.ts`** — the one file with all org details. Replace every
+   `REPLACE…` value (email, WhatsApp number, 80G/PAN/registration, donation
+   links, form keys, social links).
+2. **`.env`** — paste your Web3Forms key (see `.env.example`). In production, set
+   these as Cloudflare build environment variables.
+3. **`src/data/impact.json`** — the impact numbers.
+4. **`src/content/`** — stories, programs, events, team, campaigns (or edit via
+   `/admin`).
+5. Replace placeholder images under `public/images/`.
+6. Set the real domain in `astro.config.mjs` (`site`) and `src/config.ts`.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Deploy / hosting
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+This repo is connected to **Cloudflare Workers Builds**. On push to `main`,
+Cloudflare runs `npm run build` and deploys per `wrangler.json` (serves `dist/`
+via the `ASSETS` binding; the Astro adapter emits `dist/_worker.js`).
 
-Any static assets, like images, can be placed in the `public/` directory.
+Connect the Content Manager (`/admin`) and finish setup using **`docs/deployment.md`**.
 
-## 🧞 Commands
+## Documentation
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                           | Action                                           |
-| :-------------------------------- | :----------------------------------------------- |
-| `npm install`                     | Installs dependencies                            |
-| `npm run dev`                     | Starts local dev server at `localhost:4321`      |
-| `npm run build`                   | Build your production site to `./dist/`          |
-| `npm run preview`                 | Preview your build locally, before deploying     |
-| `npm run astro ...`               | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help`         | Get help using the Astro CLI                     |
-| `npm run build && npm run deploy` | Deploy your production site to Cloudflare        |
-| `npm wrangler tail`               | View real-time logs for all Workers              |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+See **`docs/`**: V3 plan, wireframes, donation-provider comparison, founder guide,
+deployment guide and the pre-launch content checklist. Start with
+`docs/founder-guide.md` (non-technical) and `docs/deployment.md`.

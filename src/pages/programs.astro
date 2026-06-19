@@ -1,0 +1,57 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Button from '../components/Button.astro';
+import Placeholder from '../components/Placeholder.astro';
+
+const programs = (await getCollection('programs')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(programs.map(async (p) => ({ p, Content: (await render(p)).Content })));
+
+const ctaMap: Record<string, { href: string; label: string; variant: 'accent' | 'primary' }> = {
+  donate: { href: '/donate', label: 'Donate to this program →', variant: 'accent' },
+  scholarship: { href: '/scholarship', label: 'Apply for Scholarship →', variant: 'primary' },
+  volunteer: { href: '/volunteer', label: 'Volunteer as a Mentor →', variant: 'primary' },
+};
+---
+
+<BaseLayout title="Programs" description="MayWe's programs: hygiene infrastructure, scholarships, and mentorship & life skills for rural girls in India.">
+  <PageHero title="Our Programs" subtitle="Three connected programs, one goal: keep bright rural girls in school." />
+
+  {
+    rendered.map(({ p, Content }, i) => (
+      <section class={i % 2 === 0 ? 'bg-white' : 'bg-green-50'}>
+        <div class="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
+          <div class={`reveal ${i % 2 === 1 ? 'md:order-2' : ''}`}>
+            <div class="text-4xl mb-3" aria-hidden="true">{p.data.icon}</div>
+            <h2 class="text-3xl mb-4">{p.data.title}</h2>
+            <div class="prose-maywe space-y-4 text-ink/85">
+              <Content />
+            </div>
+            {p.data.whatWeBuild.length > 0 && (
+              <ul class="mt-5 space-y-2">
+                {p.data.whatWeBuild.map((item) => (
+                  <li class="flex gap-2 text-ink/85">
+                    <span class="text-green-700 font-bold" aria-hidden="true">✓</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {p.data.impactToDate && (
+              <p class="mt-4 text-sm font-semibold text-teal-500">{p.data.impactToDate}</p>
+            )}
+            <div class="mt-6">
+              <Button href={ctaMap[p.data.cta].href} variant={ctaMap[p.data.cta].variant}>
+                {ctaMap[p.data.cta].label}
+              </Button>
+            </div>
+          </div>
+          <div class={`reveal ${i % 2 === 1 ? 'md:order-1' : ''}`}>
+            <Placeholder src={p.data.image} label={`${p.data.title} photo`} alt={p.data.imageAlt ?? p.data.title} ratio="4/3" class="shadow-[var(--shadow-card)]" />
+          </div>
+        </div>
+      </section>
+    ))
+  }
+</BaseLayout>

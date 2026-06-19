@@ -1,0 +1,33 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'accent' | 'outline' | 'white';
+  type?: 'button' | 'submit';
+  class?: string;
+  [key: string]: any;
+}
+
+const { href, variant = 'primary', type = 'button', class: cls = '', ...rest } = Astro.props;
+
+const base =
+  'inline-flex items-center justify-center gap-2 font-semibold text-base px-6 py-3 rounded-lg transition-all duration-200 min-h-[44px]';
+const variants: Record<string, string> = {
+  primary: 'bg-green-700 text-white hover:bg-green-900 shadow-sm hover:shadow-md',
+  accent: 'bg-saffron-700 text-white hover:brightness-95 shadow-sm hover:shadow-md',
+  outline: 'border-2 border-green-700 text-green-700 hover:bg-green-50',
+  white: 'bg-white text-green-700 hover:bg-green-50 shadow-sm',
+};
+const cn = `${base} ${variants[variant]} ${cls}`;
+---
+
+{
+  href ? (
+    <a href={href} class={cn} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={cn} {...rest}>
+      <slot />
+    </button>
+  )
+}

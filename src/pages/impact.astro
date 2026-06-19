@@ -1,0 +1,98 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ImpactCounters from '../components/ImpactCounters.astro';
+import StoryCard from '../components/StoryCard.astro';
+import Button from '../components/Button.astro';
+import impact from '../data/impact.json';
+
+const impactStories = (await getCollection('stories'))
+  .filter((s) => !s.data.draft && s.data.category === 'Impact Stories')
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 6);
+const readMin = (body = '') => Math.max(1, Math.round(body.split(/\s+/).length / 200));
+const barColors = ['bg-green-700', 'bg-teal-500', 'bg-saffron-700'];
+---
+
+<BaseLayout title="Impact" description="MayWe's measurable impact: girls supported, schools served, funds raised — and where the money goes.">
+  <PageHero variant="dark" title="Our Impact" subtitle="Every number is a girl whose life changed." />
+
+  <!-- COUNTERS -->
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-16">
+      <ImpactCounters size="large" />
+    </div>
+  </section>
+
+  <!-- ANNUAL REPORT + ALLOCATION -->
+  <section class="bg-green-50">
+    <div class="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-8 items-start">
+      <div class="bg-white rounded-xl p-8 shadow-[var(--shadow-card)]">
+        <h3 class="text-2xl mb-2">{impact.annualReportYear} Annual Impact Report</h3>
+        <p class="text-ink/85 mb-5">A full breakdown of programs, financials and reach.</p>
+        {
+          impact.annualReportUrl ? (
+            <Button href={impact.annualReportUrl} variant="primary">Download PDF →</Button>
+          ) : (
+            <p class="text-sm text-muted italic">Report coming soon — add the PDF link in <code>src/data/impact.json</code>.</p>
+          )
+        }
+      </div>
+      <div class="bg-white rounded-xl p-8 shadow-[var(--shadow-card)]">
+        <h3 class="text-2xl mb-5">Where your money goes</h3>
+        <div class="space-y-4">
+          {
+            impact.allocation.map((a, i) => (
+              <div>
+                <div class="flex justify-between text-sm font-medium mb-1">
+                  <span>{a.label}</span>
+                  <span>{a.pct}%</span>
+                </div>
+                <div class="h-3 rounded-full bg-green-100 overflow-hidden">
+                  <div class={`h-full ${barColors[i % barColors.length]}`} style={`width:${a.pct}%`} />
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT STORIES -->
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-16">
+      <SectionHeading eyebrow="In their words" title="Impact stories" class="mb-10" />
+      {
+        impactStories.length > 0 ? (
+          <div class="grid md:grid-cols-3 gap-6">
+            {impactStories.map((s) => (
+              <StoryCard
+                href={`/stories/${s.id}`}
+                title={s.data.title}
+                excerpt={s.data.excerpt}
+                category={s.data.category}
+                date={s.data.date}
+                cover={s.data.cover}
+                coverAlt={s.data.coverAlt}
+                readMin={readMin(s.body)}
+              />
+            ))}
+          </div>
+        ) : (
+          <p class="text-center text-muted">Impact stories will appear here. Tag a story with the “Impact Stories” category.</p>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- DONATE CTA -->
+  <section class="bg-green-900 text-white">
+    <div class="max-w-3xl mx-auto px-4 py-14 text-center">
+      <h2 class="text-3xl text-white">Be part of the next number.</h2>
+      <div class="mt-6"><Button href="/donate" variant="accent">Donate Now →</Button></div>
+    </div>
+  </section>
+</BaseLayout>

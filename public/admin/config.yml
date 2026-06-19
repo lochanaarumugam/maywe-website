@@ -1,0 +1,148 @@
+# ─────────────────────────────────────────────────────────────
+# Sveltia CMS configuration (Decap-compatible).
+# Founders manage content from /admin. Saving commits to GitHub
+# and Cloudflare Pages rebuilds the site automatically.
+#
+# SETUP: replace `repo` below with the real GitHub repo, and set up
+# auth (see docs/deployment.md). For local editing run the site with
+# `npm run dev` and visit http://localhost:4321/admin (use the
+# "Work with Local Repository" option in Sveltia).
+# ─────────────────────────────────────────────────────────────
+backend:
+  name: github
+  repo: lochanaarumugam/maywe-website # this repo (Cloudflare-connected)
+  branch: main
+
+media_folder: 'public/images'
+public_folder: '/images'
+
+# Allow editing on the local file system during `npm run dev`
+local_backend: true
+
+collections:
+  - name: stories
+    label: Stories (Blog)
+    label_singular: Story
+    folder: src/content/stories
+    create: true
+    slug: '{{slug}}'
+    summary: '{{title}} — {{category}}'
+    sortable_fields: [date, title]
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: excerpt, label: Excerpt, widget: text, hint: One-or-two sentence summary shown on cards }
+      - {
+          name: category,
+          label: Category,
+          widget: select,
+          options: [Hygiene, Scholarships, Events, Impact Stories],
+        }
+      - { name: date, label: Date, widget: datetime, date_format: 'YYYY-MM-DD', time_format: false }
+      - { name: author, label: Author, widget: string, default: MayWe Team }
+      - { name: cover, label: Cover image, widget: image, required: false }
+      - { name: coverAlt, label: Cover image alt text, widget: string, required: false, hint: Describe the image for screen readers }
+      - { name: tags, label: Tags, widget: list, required: false }
+      - { name: draft, label: Draft (hidden from site), widget: boolean, default: false }
+      - {
+          name: hasChildPhoto,
+          label: Contains a photo of a child?,
+          widget: boolean,
+          default: false,
+          hint: 'If yes, you MUST have a signed guardian consent / media-release form on file.',
+        }
+      - {
+          name: guardianConsentOnFile,
+          label: Guardian consent on file (offline)?,
+          widget: boolean,
+          default: false,
+        }
+      - { name: body, label: Body, widget: markdown }
+
+  - name: programs
+    label: Programs
+    label_singular: Program
+    folder: src/content/programs
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: icon, label: Icon (emoji), widget: string, default: '🌱' }
+      - { name: order, label: Display order, widget: number, default: 0, value_type: int }
+      - { name: summary, label: Summary, widget: text }
+      - { name: cta, label: Call to action, widget: select, options: [donate, scholarship, volunteer], default: donate }
+      - { name: image, label: Image, widget: image, required: false }
+      - { name: imageAlt, label: Image alt text, widget: string, required: false }
+      - { name: whatWeBuild, label: 'What we do (bullet list)', widget: list, required: false }
+      - { name: whoBenefits, label: Who benefits, widget: text, required: false }
+      - { name: impactToDate, label: Impact to date, widget: string, required: false }
+      - { name: body, label: Body, widget: markdown, required: false }
+
+  - name: events
+    label: Events
+    label_singular: Event
+    folder: src/content/events
+    create: true
+    slug: '{{slug}}'
+    sortable_fields: [date, title]
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Date, widget: datetime, date_format: 'YYYY-MM-DD', time_format: false }
+      - { name: time, label: Time (text), widget: string, required: false, default: '10:00 AM IST' }
+      - { name: location, label: Location, widget: string, default: Online }
+      - { name: description, label: Description, widget: text }
+      - { name: cover, label: Cover image, widget: image, required: false }
+      - { name: organiserContact, label: Organiser contact, widget: string, required: false }
+      - { name: registerUrl, label: Registration link (form or WhatsApp), widget: string, required: false }
+
+  - name: team
+    label: Team
+    label_singular: Team member
+    folder: src/content/team
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { name: name, label: Name, widget: string }
+      - { name: role, label: Role, widget: string }
+      - { name: order, label: Display order, widget: number, default: 0, value_type: int }
+      - { name: bio, label: Short bio, widget: text }
+      - { name: photo, label: Photo, widget: image, required: false }
+
+  - name: campaigns
+    label: Donation campaigns
+    label_singular: Campaign
+    folder: src/content/campaigns
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: icon, label: Icon (emoji), widget: string, default: '🎯' }
+      - { name: order, label: Display order, widget: number, default: 0, value_type: int }
+      - { name: description, label: Description, widget: text }
+      - { name: goal, label: Goal (₹), widget: number, value_type: int }
+      - { name: raised, label: Raised so far (₹), widget: number, value_type: int, default: 0 }
+      - { name: donateUrl, label: Donation page URL (Razorpay/Danamojo), widget: string }
+
+  - name: data
+    label: Site data
+    files:
+      - name: impact
+        label: Impact numbers
+        file: src/data/impact.json
+        fields:
+          - name: counters
+            label: Impact counters
+            widget: list
+            fields:
+              - { name: label, label: Label, widget: string }
+              - { name: value, label: Value, widget: number, value_type: int }
+              - { name: suffix, label: Suffix (e.g. +), widget: string, required: false }
+              - { name: format, label: Format, widget: select, options: [plain, inr], default: plain }
+              - { name: icon, label: Icon (emoji), widget: string, required: false }
+          - name: allocation
+            label: 'Fund allocation (where money goes)'
+            widget: list
+            fields:
+              - { name: label, label: Label, widget: string }
+              - { name: pct, label: Percent, widget: number, value_type: int }
+          - { name: annualReportUrl, label: Annual report PDF URL, widget: string, required: false }
+          - { name: annualReportYear, label: Annual report year, widget: string, required: false }
