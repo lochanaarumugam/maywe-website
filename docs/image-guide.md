@@ -83,3 +83,23 @@ site is shared. A branded default ships with the repo. To replace it, drop
 `og-default.jpg` (1200×630-ish) in `raw-images/` and run `npm run images`.
 
 Individual stories automatically use their own cover image as the share image.
+
+---
+
+## 6. Videos
+
+**Never upload video files to the site** — they're heavy, don't stream, and waste
+hosting. On a rural 4G audience this matters a lot.
+
+Instead:
+1. Upload the video to **YouTube** (free; set it **Unlisted** if you don't want it
+   publicly listed) or Vimeo.
+2. Copy its normal link (e.g. `https://youtu.be/abc123`).
+3. Paste it into a story's **Video** field in the CMS (`/admin → Stories`).
+
+It embeds automatically as a responsive, privacy-friendly player at the top of the
+story (replacing the cover image there). The cover image is still used for the
+story card and social-share preview, so set both.
+
+Your `docs/vision/` videos (Little Hearts School, Tribal School Taps) are perfect
+for this — upload them to YouTube and link them from the relevant stories.

@@ -14,6 +14,8 @@ const stories = defineCollection({
     author: z.string().default('MayWe Team'),
     cover: z.string().optional(),
     coverAlt: z.string().optional(),
+    // Optional YouTube/Vimeo URL — embedded, never a hosted file.
+    video: z.string().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
     // Child-protection gate (CP-01): set true only if guardian consent /

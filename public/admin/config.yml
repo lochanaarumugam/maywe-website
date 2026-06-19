@@ -41,6 +41,7 @@ collections:
       - { name: author, label: Author, widget: string, default: MayWe Team }
       - { name: cover, label: Cover image, widget: image, required: false }
       - { name: coverAlt, label: Cover image alt text, widget: string, required: false, hint: Describe the image for screen readers }
+      - { name: video, label: 'Video URL (YouTube / Vimeo)', widget: string, required: false, hint: 'Optional. Paste a YouTube or Vimeo link — it embeds automatically. Never upload video files.' }
       - { name: tags, label: Tags, widget: list, required: false }
       - { name: draft, label: Draft (hidden from site), widget: boolean, default: false }
       - {

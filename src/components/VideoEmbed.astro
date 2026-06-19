@@ -1,0 +1,41 @@
+---
+/**
+ * Responsive, privacy-friendly YouTube/Vimeo embed.
+ * Founders paste a normal video URL; we never host the video file.
+ */
+interface Props {
+  url: string;
+  title?: string;
+  class?: string;
+}
+const { url, title = 'Video', class: cls = '' } = Astro.props;
+
+function toEmbed(u: string): string | null {
+  let m = u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/))([\w-]{11})/);
+  if (m) return `https://www.youtube-nocookie.com/embed/${m[1]}`;
+  m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (m) return `https://player.vimeo.com/video/${m[1]}`;
+  return null;
+}
+const embed = toEmbed(url);
+---
+
+{
+  embed ? (
+    <div class={`relative w-full overflow-hidden rounded-2xl shadow-[var(--shadow-card)] bg-green-900 ${cls}`} style="aspect-ratio:16/9">
+      <iframe
+        src={embed}
+        title={title}
+        loading="lazy"
+        class="absolute inset-0 w-full h-full"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      />
+    </div>
+  ) : (
+    <a href={url} target="_blank" rel="noopener" class={`block text-green-700 underline ${cls}`}>
+      Watch the video →
+    </a>
+  )
+}
