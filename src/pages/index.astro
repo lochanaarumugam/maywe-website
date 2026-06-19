@@ -5,8 +5,7 @@ import Button from '../components/Button.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import ImpactCounters from '../components/ImpactCounters.astro';
 import StoryCard from '../components/StoryCard.astro';
-import Placeholder from '../components/Placeholder.astro';
-import impact from '../data/impact.json';
+import { hasPublicImage } from '../lib/images';
 
 const programs = (await getCollection('programs')).sort((a, b) => a.data.order - b.data.order);
 
@@ -17,7 +16,7 @@ const stories = (await getCollection('stories'))
 
 const readMin = (body = '') => Math.max(1, Math.round(body.split(/\s+/).length / 200));
 const amounts = [500, 1000, 2500, 5000];
-const headline = impact.counters[0];
+const heroImg = hasPublicImage('/images/hero.webp');
 const ctaLabel: Record<string, string> = {
   donate: 'Learn more',
   scholarship: 'Apply now',
@@ -31,15 +30,41 @@ const ctaHref: Record<string, string> = {
 ---
 
 <BaseLayout>
-  <!-- HERO -->
-  <section class="hero-wash relative overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 pt-14 md:pt-20 pb-20 md:pb-28 grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-center">
-      <div class="hero-stagger">
+  <!-- HERO — full-bleed photo, opaque on the right, fading into the page on the left -->
+  <section class="relative isolate overflow-hidden">
+    <div class="absolute inset-0 -z-10">
+      {
+        heroImg ? (
+          <img
+            src="/images/hero.webp"
+            alt="Building a school for rural girls in India"
+            class="w-full h-full object-cover"
+            style="object-position:80% center"
+            fetchpriority="high"
+          />
+        ) : (
+          <div class="w-full h-full hero-wash"></div>
+        )
+      }
+      <!-- left → right fade: cream on the left (text stays vivid), photo full on the right -->
+      <div
+        class="absolute inset-0"
+        style="background:linear-gradient(100deg, var(--color-paper) 0%, var(--color-paper) 30%, rgba(250,246,238,0.86) 44%, rgba(250,246,238,0.35) 60%, rgba(250,246,238,0) 80%)"
+        aria-hidden="true"
+      ></div>
+      <!-- mobile: a soft full veil so the headline stays readable over the photo -->
+      <div class="absolute inset-0 bg-paper/78 md:bg-transparent" aria-hidden="true"></div>
+      <!-- ground the bottom edge into the page -->
+      <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-paper to-transparent" aria-hidden="true"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 py-24 md:py-32 lg:py-40">
+      <div class="hero-stagger max-w-xl">
         <span class="kicker">Hygiene &amp; education for rural girls</span>
         <h1 class="mt-5 font-display text-[2.9rem] sm:text-6xl lg:text-[4.1rem] leading-[1.02] text-ink">
           Every girl deserves to <span class="italic text-green-700">stay in school.</span>
         </h1>
-        <p class="mt-6 text-lg md:text-xl text-ink/75 max-w-xl leading-relaxed">
+        <p class="mt-6 text-lg md:text-xl text-ink/80 max-w-md leading-relaxed">
           MayWe builds clean toilets and safe water in tribal and rural schools, and funds
           scholarships for bright girls — so a dignified school and a future are the norm,
           not a privilege.
@@ -52,49 +77,6 @@ const ctaHref: Record<string, string> = {
           <span class="text-green-700" aria-hidden="true">●</span>
           Tax-deductible under 80G · 100% of our work is in India
         </p>
-      </div>
-
-      <div class="hero-art relative mx-auto w-full max-w-[420px] lg:mr-0">
-        <!-- block-print dot motif, top-right -->
-        <div
-          class="absolute -top-6 -right-2 w-28 h-20 opacity-70 hidden sm:block"
-          style="background-image:radial-gradient(var(--color-marigold) 24%, transparent 26%); background-size:15px 15px"
-          aria-hidden="true"
-        ></div>
-        <!-- teal seed cluster, bottom-right behind -->
-        <div class="absolute -z-0 -bottom-8 right-2 w-24 h-24 rounded-full bg-teal-500/15 blur-xl" aria-hidden="true"></div>
-
-        <!-- offset arch (depth) -->
-        <div
-          class="absolute inset-0 translate-x-3 translate-y-3 bg-gradient-to-br from-marigold/35 via-saffron-700/15 to-teal-500/25"
-          style="border-radius:48% 48% 1.6rem 1.6rem / 56% 56% 1.6rem 1.6rem"
-          aria-hidden="true"
-        ></div>
-
-        <!-- arched image frame -->
-        <div
-          class="relative overflow-hidden shadow-[var(--shadow-card)] ring-1 ring-black/5 bg-paper"
-          style="border-radius:48% 48% 1.6rem 1.6rem / 56% 56% 1.6rem 1.6rem"
-        >
-          <Placeholder src="/images/hero.webp" label="Hero photo — girls at school" alt="Building a school for rural girls" ratio="4/5" />
-          <!-- warm wash to seat the photo in the palette -->
-          <div class="absolute inset-0 bg-gradient-to-t from-green-900/35 via-transparent to-transparent" aria-hidden="true"></div>
-        </div>
-
-        <!-- sprout mark -->
-        <svg class="absolute top-4 left-4 w-9 h-9 text-marigold drop-shadow" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true">
-          <path d="M24 44c0-9-3-15-10-18 8-1 13 3 15 10 2-9 6-13 13-13-5 5-7 11-7 21z" />
-        </svg>
-
-        <!-- floating stat chip -->
-        <div class="absolute -bottom-4 -left-3 sm:-left-7 card px-5 py-3.5 flex items-center gap-3 -rotate-2">
-          <span class="font-display text-3xl font-semibold text-green-700">
-            {headline.value.toLocaleString('en-IN')}{headline.suffix}
-          </span>
-          <span class="text-[0.7rem] font-bold uppercase tracking-wider text-muted leading-tight max-w-[5rem]">
-            {headline.label}
-          </span>
-        </div>
       </div>
     </div>
   </section>
