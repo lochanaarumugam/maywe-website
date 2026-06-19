@@ -130,21 +130,6 @@ p {
     radial-gradient(60% 60% at 50% 50%, rgba(11, 110, 110, 0.05), transparent 70%);
 }
 
-/* Feather an image's edges into the background (no hard frame).
-   Stronger on the left so the hero headline stays readable. */
-.hero-feather {
-  -webkit-mask-image:
-    linear-gradient(to right, transparent 0, #000 4%, #000 100%),
-    linear-gradient(to left, transparent 0, #000 3%, #000 100%),
-    linear-gradient(to bottom, transparent 0, #000 4%, #000 96%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(to right, transparent 0, #000 4%, #000 100%),
-    linear-gradient(to left, transparent 0, #000 3%, #000 100%),
-    linear-gradient(to bottom, transparent 0, #000 4%, #000 96%, transparent 100%);
-  mask-composite: intersect;
-}
-
 /* Hairline divider with a marigold seed in the middle */
 .seed-divider {
   display: flex;
