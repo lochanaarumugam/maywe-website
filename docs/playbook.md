@@ -1,8 +1,5 @@
 # MayWe Website — Step-by-Step Playbook
 
-A plain-English guide for non-technical editors. No prior coding knowledge needed.
-Take it slowly, follow the numbered steps, and you can't break anything that a
-quick "undo" won't fix.
 
 > **The project folder** (on the Mac it was set up on) is:
 > `/Volumes/dock-ssd 1/Workspaces/maywe-website`

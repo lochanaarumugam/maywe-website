@@ -33,14 +33,14 @@ const ctaHref: Record<string, string> = {
   <!-- HERO — photo contained within the inner area (like every other section), fading left -->
   <section class="relative">
     <div class="max-w-7xl mx-auto px-4 pt-6 md:pt-8">
-      <div class="relative isolate overflow-hidden rounded-3xl ring-1 ring-black/5 shadow-[var(--shadow-soft)] flex items-center min-h-[440px] md:min-h-[540px]">
+      <div class="relative isolate flex items-center min-h-[440px] md:min-h-[540px]">
         <div class="absolute inset-0 -z-10">
           {
             heroImg ? (
               <img
                 src="/images/hero.webp"
                 alt="Building a school for rural girls in India"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover hero-feather"
                 style="object-position:80% center"
                 fetchpriority="high"
               />
