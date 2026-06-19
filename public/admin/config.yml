@@ -12,6 +12,7 @@ backend:
   name: github
   repo: lochanaarumugam/maywe-website # this repo (Cloudflare-connected)
   branch: main
+  base_url: https://maywe-website.arucary.workers.dev
 
 media_folder: 'public/images'
 public_folder: '/images'
