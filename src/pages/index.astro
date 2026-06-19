@@ -30,53 +30,53 @@ const ctaHref: Record<string, string> = {
 ---
 
 <BaseLayout>
-  <!-- HERO — full-bleed photo, opaque on the right, fading into the page on the left -->
-  <section class="relative isolate overflow-hidden">
-    <div class="absolute inset-0 -z-10">
-      {
-        heroImg ? (
-          <img
-            src="/images/hero.webp"
-            alt="Building a school for rural girls in India"
-            class="w-full h-full object-cover"
-            style="object-position:80% center"
-            fetchpriority="high"
-          />
-        ) : (
-          <div class="w-full h-full hero-wash"></div>
-        )
-      }
-      <!-- left → right fade: cream on the left (text stays vivid), photo full on the right -->
-      <div
-        class="absolute inset-0"
-        style="background:linear-gradient(100deg, var(--color-paper) 0%, var(--color-paper) 30%, rgba(250,246,238,0.86) 44%, rgba(250,246,238,0.35) 60%, rgba(250,246,238,0) 80%)"
-        aria-hidden="true"
-      ></div>
-      <!-- mobile: a soft full veil so the headline stays readable over the photo -->
-      <div class="absolute inset-0 bg-paper/78 md:bg-transparent" aria-hidden="true"></div>
-      <!-- ground the bottom edge into the page -->
-      <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-paper to-transparent" aria-hidden="true"></div>
-    </div>
-
-    <div class="max-w-7xl mx-auto px-4 py-24 md:py-32 lg:py-40">
-      <div class="hero-stagger max-w-xl">
-        <span class="kicker">Hygiene &amp; education for rural girls</span>
-        <h1 class="mt-5 font-display text-[2.9rem] sm:text-6xl lg:text-[4.1rem] leading-[1.02] text-ink">
-          Every girl deserves to <span class="italic text-green-700">stay in school.</span>
-        </h1>
-        <p class="mt-6 text-lg md:text-xl text-ink/80 max-w-md leading-relaxed">
-          MayWe builds clean toilets and safe water in tribal and rural schools, and funds
-          scholarships for bright girls — so a dignified school and a future are the norm,
-          not a privilege.
-        </p>
-        <div class="mt-9 flex flex-wrap gap-4">
-          <Button href="/donate" variant="accent">Donate Now</Button>
-          <Button href="/impact" variant="outline">See our impact →</Button>
+  <!-- HERO — photo contained within the inner area (like every other section), fading left -->
+  <section class="relative">
+    <div class="max-w-7xl mx-auto px-4 pt-6 md:pt-8">
+      <div class="relative isolate overflow-hidden rounded-3xl ring-1 ring-black/5 shadow-[var(--shadow-soft)] flex items-center min-h-[440px] md:min-h-[540px]">
+        <div class="absolute inset-0 -z-10">
+          {
+            heroImg ? (
+              <img
+                src="/images/hero.webp"
+                alt="Building a school for rural girls in India"
+                class="w-full h-full object-cover"
+                style="object-position:80% center"
+                fetchpriority="high"
+              />
+            ) : (
+              <div class="w-full h-full hero-wash"></div>
+            )
+          }
+          <!-- left → right fade: cream on the left (text stays vivid), photo full on the right -->
+          <div
+            class="absolute inset-0"
+            style="background:linear-gradient(100deg, var(--color-paper) 0%, var(--color-paper) 26%, rgba(250,246,238,0.86) 42%, rgba(250,246,238,0.32) 60%, rgba(250,246,238,0) 82%)"
+            aria-hidden="true"
+          ></div>
+          <!-- mobile: a soft full veil so the headline stays readable over the photo -->
+          <div class="absolute inset-0 bg-paper/78 md:bg-transparent" aria-hidden="true"></div>
         </div>
-        <p class="mt-7 text-sm text-muted flex items-center gap-2">
-          <span class="text-green-700" aria-hidden="true">●</span>
-          Tax-deductible under 80G · 100% of our work is in India
-        </p>
+
+        <div class="hero-stagger max-w-xl px-6 sm:px-10 md:px-14 py-16 md:py-20">
+          <span class="kicker">Hygiene &amp; education for rural girls</span>
+          <h1 class="mt-5 font-display text-[2.7rem] sm:text-5xl lg:text-6xl leading-[1.03] text-ink">
+            Every girl deserves to <span class="italic text-green-700">stay in school.</span>
+          </h1>
+          <p class="mt-6 text-lg md:text-xl text-ink/80 max-w-md leading-relaxed">
+            MayWe builds clean toilets and safe water in tribal and rural schools, and funds
+            scholarships for bright girls — so a dignified school and a future are the norm,
+            not a privilege.
+          </p>
+          <div class="mt-9 flex flex-wrap gap-4">
+            <Button href="/donate" variant="accent">Donate Now</Button>
+            <Button href="/impact" variant="outline">See our impact →</Button>
+          </div>
+          <p class="mt-7 text-sm text-muted flex items-center gap-2">
+            <span class="text-green-700" aria-hidden="true">●</span>
+            Tax-deductible under 80G · 100% of our work is in India
+          </p>
+        </div>
       </div>
     </div>
   </section>
