@@ -6,6 +6,8 @@ excerpt: >-
 category: Scholarships
 date: 2026-03-30
 author: MayWe Team
+cover: /images/story-selection.webp
+coverAlt: Reviewing scholarship applications
 tags: [scholarships, transparency, process]
 hasChildPhoto: false
 guardianConsentOnFile: false

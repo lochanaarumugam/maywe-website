@@ -6,6 +6,8 @@ excerpt: >-
 category: Impact Stories
 date: 2026-02-18
 author: MayWe Team
+cover: /images/story-handwash.webp
+coverAlt: Children at a school handwash station
 tags: [hygiene, impact, health]
 hasChildPhoto: false
 guardianConsentOnFile: false

@@ -1,0 +1,3 @@
+# Drop source images here (any size), then run: npm run images
+# Optimised WebP/PNG files are written to public/images/ and committed.
+# The originals in this folder are NOT committed (see .gitignore).

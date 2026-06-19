@@ -7,6 +7,7 @@ summary: >-
   We build and renovate toilets, handwash stations and safe drinking-water
   points in tribal and rural schools — so girls have a clean, dignified place
   to learn and a reason to stay enrolled.
+image: /images/program-hygiene.webp
 imageAlt: Girls at a newly built handwash station in a rural school
 whatWeBuild:
   - Toilet blocks designed for girls' privacy and safety

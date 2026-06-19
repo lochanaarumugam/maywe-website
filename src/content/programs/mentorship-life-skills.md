@@ -7,6 +7,7 @@ summary: >-
   We pair scholarship girls with volunteer mentors for career guidance, and run
   life-skill and leadership workshops — so support goes beyond money to
   confidence and direction.
+image: /images/program-mentorship.webp
 imageAlt: A mentor and student talking during a life-skills workshop
 whatWeBuild:
   - One-to-one mentor pairing for career and study guidance

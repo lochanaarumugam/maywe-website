@@ -6,6 +6,8 @@ excerpt: >-
 category: Hygiene
 date: 2026-05-20
 author: MayWe Team
+cover: /images/story-toilet-block.webp
+coverAlt: A new girls' toilet block at a rural school
 tags: [hygiene, rural schools, retention]
 hasChildPhoto: false
 guardianConsentOnFile: false

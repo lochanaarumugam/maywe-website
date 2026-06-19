@@ -7,6 +7,7 @@ summary: >-
   Merit-based scholarships for academically gifted girls from low-income
   tribal and rural families — covering tuition, materials and the costs that
   usually end a bright girl's education early.
+image: /images/program-scholarships.webp
 imageAlt: A scholarship student studying with her books
 whatWeBuild:
   - Annual merit-based scholarships for girls aged 14–21

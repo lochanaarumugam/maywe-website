@@ -6,6 +6,8 @@ excerpt: >-
 category: Impact Stories
 date: 2026-04-12
 author: MayWe Team
+cover: /images/story-lakshmi.webp
+coverAlt: A college student supported by a MayWe scholarship
 tags: [scholarships, impact, mentorship]
 hasChildPhoto: false
 guardianConsentOnFile: false
